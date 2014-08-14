@@ -1,0 +1,45 @@
+8 Task3942
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+2
+0
+16 abcd
+4
+a
+b
+cd
+ab
+9 Case 1: 2
+1
+1
+42 azbcdabcd
+10
+a
+b
+c
+d
+ab
+bc
+cd
+abc
+bcd
+abcd
+9 Case 1: 0
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+13 main.Task3942
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.07.03
+6 UVa LA
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+1

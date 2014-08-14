@@ -1,0 +1,33 @@
+5 TaskA
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+29 2
+2 3
+001
+111
+3 3
+001
+011
+000
+28 Case 1: row 1
+Case 2: both 2
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskA
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.06.15
+0 
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+1

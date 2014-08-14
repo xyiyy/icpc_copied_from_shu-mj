@@ -1,0 +1,40 @@
+5 TaskI
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+72 2
+3 7
+0 1 0
+1 0 0
+1 1 -3
+1 1
+5 -1
+3 2
+2 -2
+-2 6
+-1 -2
+-8 4
+1 1
+0 1 0
+0 1
+20 PROTECTED
+VULNERABLE
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskI
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.07.02
+8 2012CERC
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+1

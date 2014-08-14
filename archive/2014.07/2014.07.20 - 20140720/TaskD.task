@@ -1,0 +1,36 @@
+5 TaskD
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+73 4 2
+2
+3269 6150 3117
+4135 5839 2770
+3377 5552 779
+7452 17787 2924
+2
+2
+0 0
+23 Case 1:
+2
+-1.000
+-1.000
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskD
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.07.20
+8 20140720
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+0

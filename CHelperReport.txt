@@ -1,0 +1,2 @@
+22 src/main/Task1771.task
+0

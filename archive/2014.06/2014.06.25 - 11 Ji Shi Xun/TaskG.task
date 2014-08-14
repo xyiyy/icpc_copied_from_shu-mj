@@ -1,0 +1,31 @@
+5 TaskG
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+44 73 5
+777567 213
+777567 211
+12341234566    71
+73 73+5=100
+777567+213=1000002
+777567+211=1000000
+12341234566+71=12341234657
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskG
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.06.25
+13 11 Ji Shi Xun
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+1

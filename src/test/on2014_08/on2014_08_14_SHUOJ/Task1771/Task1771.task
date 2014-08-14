@@ -1,0 +1,32 @@
+8 Task1771
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+2
+0
+25 3 1 10 2 10 20 4 10 30 -1
+36 Case 1: 1 2 Case 2: 0 0 Case 3: 2 33
+1
+1
+26 1
+0 1000000000000000000 -3
+34 Case 1:
+16963102281884928 19088706
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+51 test.on2014_08.on2014_08_14_SHUOJ.Task1771.Task1771
+39 net.egork.chelper.checkers.TokenChecker
+0 
+1
+59 test.on2014_08.on2014_08_14_SHUOJ.Task1771.Task1771TestCase
+10 2014.08.14
+5 SHUOJ
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+0

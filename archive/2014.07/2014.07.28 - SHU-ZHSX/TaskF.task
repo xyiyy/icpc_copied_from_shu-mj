@@ -1,0 +1,36 @@
+5 TaskF
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+1
+0
+47 4 1
+0 1
+0 2
+0 3
+0 4
+O 1
+O 2
+O 4
+S 1 4
+O 3
+S 1 4
+12 FAIL
+SUCCESS
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskF
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.07.28
+8 SHU-ZHSX
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+0

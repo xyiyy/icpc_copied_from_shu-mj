@@ -1,0 +1,61 @@
+5 TaskE
+6 SINGLE
+8 STANDARD
+9 input.txt
+8 STANDARD
+10 output.txt
+2
+0
+93 1
+6
+START = FIRST + SECND
+FIRST = D + E
+SECND = F + E
+D = good
+E = times
+F = bad
+START
+debate
+3 YES
+1
+1
+122 3
+4
+A = B + B
+B = C + D
+C = a
+D = b
+A
+abab
+4
+A = B + B
+B = C + D
+C = a
+D = b
+A
+abaa
+4
+A = B + B
+B = C + D
+C = a
+D = b
+A
+aa
+10 YES
+NO
+YES
+1
+8 src/main
+16 -Xmx256m -Xss64m
+4 Main
+10 main.TaskE
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.06.30
+13 <TiaoZhan>3.5
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+1
