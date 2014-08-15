@@ -1,9 +1,13 @@
+import java.util.Arrays;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.util.List;
 import java.math.BigInteger;
+import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -18,18 +22,19 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		Task1771 solver = new Task1771();
+		Task4945 solver = new Task4945();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class Task1771 {
+class Task4945 {
     Scanner in;
     PrintWriter out;
-    private long[] ten;
-    private long[][][] dpCount;
-    private long[][][] dpSum;
+    private long[] two;
+    private long[] p;
+    private long[] rP;
+    private int[] logTwo;
 
     public void solve(int testNumber, Scanner in, PrintWriter out) {
         this.in = in;
@@ -38,87 +43,73 @@ class Task1771 {
     }
 
     void run() {
-        init();
-        int t = in.nextInt();
-        for (int i = 1; i <= t; i++) {
-            out.printf("Case %d:%n", i);
-            solve();
+        int cs = 1;
+        two = new long[100010];
+        for (int i = 0; i < two.length; i++) {
+            if (i == 0) two[i] = 1;
+            else two[i] = two[i - 1] * 2 % M;
+        }
+        p = new long[100010];
+        for (int i = 0; i < p.length; i++) {
+            if (i == 0) p[i] = 1;
+            else p[i] = p[i - 1] * i % M;
+        }
+        rP = new long[100010];
+        for (int i = 100009; i >= 0; i--) {
+            if (i == 100009) rP[i] = BigInteger.valueOf(p[i]).modInverse(BigInteger.valueOf(M)).longValue();
+            else rP[i] = rP[i + 1] * (i + 1) % M;
+        }
+        logTwo = new int[2049];
+        Arrays.fill(logTwo, -1);
+        for (int i = 1, j = 0; i <= 2048; i <<= 1) {
+            logTwo[i] = j;
+        }
+        while (in.hasNext()) {
+            int n = in.nextInt();
+            if (n == 0) break;
+            out.printf("Case #%d: ", cs++);
+            solve(n);
         }
     }
-
-    private void solve() {
-        long l = in.nextLong();
-        long r = in.nextLong();
-        int m = in.nextInt();
-        P ansR = solve(r, m);
-        if (l != 0) {
-            P ansL = solve(l - 1, m);
-            ansR.count -= ansL.count;
-            ansR.sum -= ansL.sum;
+    final long M = 998244353;
+    private void solve(int n) {
+        int[] cs = new int[12];
+        int other = 0;
+        for (int i = 0; i < n; i++) {
+            int x = in.nextInt();
+            if (logTwo[x] != -1) cs[logTwo[x]]++;
+            else other++;
         }
-        ansR.sum %= M;
-        ansR.sum += M;
-        ansR.sum %= M;
-        out.println(ansR.count + " " + ansR.sum);
-    }
-
-    private void init() {
-        ten = new long[20];
-        for (int i = 0; i < 20; i++) ten[i] = (i == 0 ? 1 : ten[i - 1] * 10);
-        // dpCount[长度][最高位][奇偶和]
-        dpCount = new long[20][10][400];
-        dpSum = new long[20][10][400];
-        for (int i = 0; i < 10; i++) {
-            dpCount[1][i][g(i) * i + 200] = 1;
-            dpSum[1][i][g(i) * i + 200] = i;
-        }
-        for (int i = 1; i < 19; i++) {
-            for (int j = 0; j < 10; j++) {
-                for (int k = 0; k < 400; k++) if (dpCount[i][j][k] != 0) {
-                    for (int d = 0; d < 10; d++) {
-                        dpCount[i + 1][d][k + g(d) * d] += dpCount[i][j][k];
-                        dpSum[i + 1][d][k + g(d) * d] += dpCount[i][j][k] % M * d % M * (ten[i] % M) + dpSum[i][j][k];
-                        dpSum[i + 1][d][k + g(d) * d] %= M;
+        long[][] dp = new long[13][2049];
+        dp[12][0] = 1;
+        for (int i = 12; i > 0; i--) {
+            for (int j = 0; j <= 2048; j += two[i]) if (dp[i][j] != 0) {
+                long sum = 0;
+                for (int k = 0; k <= cs[i - 1]; k++) {
+                    int crt = j + k * (int) two[i - 1];
+                    if (crt >= 2048) {
+                        dp[i - 1][2048] += dp[i][j] * (two[cs[i - 1]] - sum) % M;
+                        dp[i - 1][2048] %= M;
+                        break;
+                    } else {
+                        dp[i - 1][crt] += dp[i][j] * C(cs[i - 1], k) % M;
+                        dp[i - 1][crt] %= M;
                     }
+                    sum += C(cs[i - 1], k);
+                    sum %= M;
                 }
+                Algo.debug(i, j);
             }
         }
+        long res = dp[0][2048] * two[other] % M;
+        res %= M;
+        res += M;
+        res %= M;
+        out.println(res);
     }
 
-    private P solve(long n, int m) {
-        n++;
-        char[] cs = Long.toString(n).toCharArray();
-        long count = 0;
-        long sum = 0;
-        int len = cs.length;
-        long oes = 0;
-        long crt = 0;
-        for (int i = 0; i < len; i++) {
-            int d = cs[i] - '0';
-            for (int j = 0; j < d; j++) {
-                count += dpCount[len - i][j][((int) (m - oes + 200))];
-                sum += dpSum[len - i][j][((int) (m - oes + 200))] + dpCount[len - i][j][((int) (m - oes + 200))] % M * (crt % M) % M;
-                sum %= M;
-            }
-            oes += g(d) * d;
-            crt += d * ten[len - i - 1];
-        }
-        return new P(count, sum);
-    }
-
-    private int g(int d) {
-        return (d & 1) != 0 ? -1 : 1;
-    }
-
-    final long M = (long) (1e8 + 7);
-    class P {
-        long count;
-        long sum;
-
-        P(long count, long sum) {
-            this.count = count;
-            this.sum = sum;
-        }
+    private long C(int m, int n) {
+        return p[m] * rP[n] % M * rP[m - n] % M;
     }
 }
 
@@ -162,9 +153,14 @@ class Scanner {
         return Integer.parseInt(next());
     }
 
-    public long nextLong() {
-        return Long.parseLong(next());
+}
+
+class Algo {
+
+    public static void debug(Object...os) {
+        System.err.println(Arrays.deepToString(os));
     }
+
 
 }
 

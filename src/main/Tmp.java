@@ -22,15 +22,16 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        long r = 0;
-        for (int i = 1; i <= 2048; i *= 2) {
-            r += i * sum(2048 / i);
-        }
-        Algo.debug(r);
-    }
-
-    private int sum(int i) {
-        return (i * (i + 1)) / 2;
+        P[] ps = new P[12];
+        ps[0] = new P(0, 0);
+        ps[1] = new P(1, 0);
+        ps[2] = new P(2, 0);
+        ps[3] = new P(2, 1);
+        ps[4] = new P(1, 1);
+        ps[5] = new P(0, 1);
+        for (int i = 6; i < 12; i++) ps[i] = ps[i < 9 ? i - 6 : i - 9];
+        ps = P.convexHull(ps);
+        Algo.debug(ps);
     }
 
     public static void main(String[] args) {
