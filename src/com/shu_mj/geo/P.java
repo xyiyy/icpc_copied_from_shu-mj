@@ -130,7 +130,7 @@ public class P implements Comparable<P> {
 
     //计算多边形的有向面积
     //点不需要有顺序
-    public static double directedArea(P[] ps) {
+    public static double directedArea(P... ps) {
         double res = 0;
         for (int i = 0; i < ps.length; i++) {
             res += ps[i].det(ps[(i + 1) % ps.length]);
@@ -139,7 +139,7 @@ public class P implements Comparable<P> {
     }
     //计算多边形的面积
     //点不需要有顺序
-    public static double area(P[] ps) {
+    public static double area(P... ps) {
         return Math.abs(directedArea(ps));
     }
 

@@ -50,31 +50,31 @@ public class Algo {
 
 
     public static void debugNotEqual(boolean[] bs, boolean v) {
-        for (int i = 0; i < bs.length; i++) if (bs[i] == v) {
+        for (int i = 0; i < bs.length; i++) if (bs[i] != v) {
             System.err.print(i + " ");
         }
         System.err.println();
     }
     public static void debugNotEqual(char[] cs, char v) {
-        for (int i = 0; i < cs.length; i++) if (cs[i] == v) {
+        for (int i = 0; i < cs.length; i++) if (cs[i] != v) {
             System.err.print(i + " ");
         }
         System.err.println();
     }
     public static void debugNotEqual(double[] ds, double v) {
-        for (int i = 0; i < ds.length; i++) if (ds[i] == v) {
+        for (int i = 0; i < ds.length; i++) if (ds[i] != v) {
             System.err.print(i + " ");
         }
         System.err.println();
     }
     public static void debugNotEqual(int[] is, int v) {
-        for (int i = 0; i < is.length; i++) if (is[i] == v) {
+        for (int i = 0; i < is.length; i++) if (is[i] != v) {
             System.err.print(i + " ");
         }
         System.err.println();
     }
     public static void debugNotEqual(long[] ls, long v) {
-        for (int i = 0; i < ls.length; i++) if (ls[i] == v) {
+        for (int i = 0; i < ls.length; i++) if (ls[i] != v) {
             System.err.print(i + " ");
         }
         System.err.println();

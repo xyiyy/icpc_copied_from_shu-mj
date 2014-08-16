@@ -1,13 +1,12 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.util.List;
 import java.math.BigInteger;
-import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Comparator;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -22,19 +21,15 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		Task4945 solver = new Task4945();
+		TaskL solver = new TaskL();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class Task4945 {
+class TaskL {
     Scanner in;
     PrintWriter out;
-    private long[] two;
-    private long[] p;
-    private long[] rP;
-    private int[] logTwo;
 
     public void solve(int testNumber, Scanner in, PrintWriter out) {
         this.in = in;
@@ -43,74 +38,37 @@ class Task4945 {
     }
 
     void run() {
-        int cs = 1;
-        two = new long[100010];
-        for (int i = 0; i < two.length; i++) {
-            if (i == 0) two[i] = 1;
-            else two[i] = two[i - 1] * 2 % M;
-        }
-        p = new long[100010];
-        for (int i = 0; i < p.length; i++) {
-            if (i == 0) p[i] = 1;
-            else p[i] = p[i - 1] * i % M;
-        }
-        rP = new long[100010];
-        for (int i = 100009; i >= 0; i--) {
-            if (i == 100009) rP[i] = BigInteger.valueOf(p[i]).modInverse(BigInteger.valueOf(M)).longValue();
-            else rP[i] = rP[i + 1] * (i + 1) % M;
-        }
-        logTwo = new int[2049];
-        Arrays.fill(logTwo, -1);
-        for (int i = 1, j = 0; i <= 2048; i <<= 1) {
-            logTwo[i] = j;
-        }
         while (in.hasNext()) {
             int n = in.nextInt();
-            if (n == 0) break;
-            out.printf("Case #%d: ", cs++);
+            if (n == -1) break;
             solve(n);
         }
     }
-    final long M = 998244353;
+
     private void solve(int n) {
-        int[] cs = new int[12];
-        int other = 0;
+        P[] ps = new P[n];
         for (int i = 0; i < n; i++) {
-            int x = in.nextInt();
-            if (logTwo[x] != -1) cs[logTwo[x]]++;
-            else other++;
+            ps[i] = new P(in.nextInt(), in.nextInt());
         }
-        long[][] dp = new long[13][2049];
-        dp[12][0] = 1;
-        for (int i = 12; i > 0; i--) {
-            for (int j = 0; j <= 2048; j += two[i]) if (dp[i][j] != 0) {
-                long sum = 0;
-                for (int k = 0; k <= cs[i - 1]; k++) {
-                    int crt = j + k * (int) two[i - 1];
-                    if (crt >= 2048) {
-                        dp[i - 1][2048] += dp[i][j] * (two[cs[i - 1]] - sum) % M;
-                        dp[i - 1][2048] %= M;
-                        break;
-                    } else {
-                        dp[i - 1][crt] += dp[i][j] * C(cs[i - 1], k) % M;
-                        dp[i - 1][crt] %= M;
-                    }
-                    sum += C(cs[i - 1], k);
-                    sum %= M;
-                }
-                Algo.debug(i, j);
+        ps = P.convexHull(ps);
+        n = ps.length;
+        if (n <= 2) {
+            out.println("0.00");
+            return ;
+        }
+        double ans = 0;
+        for (int i = 0; i < n; i++) {
+            int j = (i + 1) % n;
+            int k = (j + 1) % n;
+            while (j != i) {
+                while (P.area(ps[i], ps[j], ps[(k + 1) % n]) > P.area(ps[i], ps[j], ps[k])) k = (k + 1) % n;
+                ans = Math.max(ans, P.area(ps[i], ps[j], ps[k]));
+                j = (j + 1) % n;
             }
         }
-        long res = dp[0][2048] * two[other] % M;
-        res %= M;
-        res += M;
-        res %= M;
-        out.println(res);
+        out.printf("%.2f%n", ans);
     }
 
-    private long C(int m, int n) {
-        return p[m] * rP[n] % M * rP[m - n] % M;
-    }
 }
 
 class Scanner {
@@ -155,12 +113,87 @@ class Scanner {
 
 }
 
-class Algo {
-
-    public static void debug(Object...os) {
-        System.err.println(Arrays.deepToString(os));
+class P implements Comparable<P> {
+    public static final double EPS = 1e-8;
+    public static double add(double a, double b) {
+        if (Math.abs(a + b) < EPS * (Math.abs(a) + Math.abs(b))) return 0;
+        return a + b;
     }
 
+    public final double x, y;
+
+    public P(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public P sub(P p) {
+        return new P(add(x, -p.x), add(y, -p.y));
+    }
+
+    public double det(P p) {
+        return add(x * p.y, -y * p.x);
+    }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        return compareTo((P) obj) == 0;
+    }
+
+    public int compareTo(P p) {
+        int b = sig(x - p.x);
+        if (b != 0) return b;
+        return sig(y - p.y);
+    }
+
+    public static int sig(double x) {
+        if (Math.abs(x) < EPS) return 0;
+        return x < 0 ? -1 : 1;
+    }
+
+    //计算多边形的有向面积
+    //点不需要有顺序
+    public static double directedArea(P... ps) {
+        double res = 0;
+        for (int i = 0; i < ps.length; i++) {
+            res += ps[i].det(ps[(i + 1) % ps.length]);
+        }
+        return res / 2;
+    }
+    //计算多边形的面积
+    //点不需要有顺序
+    public static double area(P... ps) {
+        return Math.abs(directedArea(ps));
+    }
+
+    //凸包
+    //逆时针 不包含线上的点
+    //如果需要包含线上的点 将 <= 0 改成 < 0
+    //但是需要注意此时不能有重点
+    public static P[] convexHull(P[] ps) {
+        int n = ps.length, k = 0;
+        if (n <= 1) return ps;
+        Arrays.sort(ps);
+        P[] qs = new P[n * 2];
+        for (int i = 0; i < n; qs[k++] = ps[i++]) {
+            while (k > 1 && qs[k - 1].sub(qs[k - 2]).det(ps[i].sub(qs[k - 1])) < EPS) k--;
+        }
+        for (int i = n - 2, t = k; i >= 0; qs[k++] = ps[i--]) {
+            while (k > t && qs[k - 1].sub(qs[k - 2]).det(ps[i].sub(qs[k - 1])) < EPS) k--;
+        }
+        P[] res = new P[k - 1];
+        System.arraycopy(qs, 0, res, 0, k - 1);
+        return res;
+    }
 
 }
 
