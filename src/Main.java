@@ -1,13 +1,17 @@
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.util.List;
 import java.math.BigInteger;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.io.BufferedReader;
+import java.util.Map;
+import java.io.PrintStream;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
@@ -21,13 +25,13 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		TaskL solver = new TaskL();
+		TaskM solver = new TaskM();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class TaskL {
+class TaskM {
     Scanner in;
     PrintWriter out;
 
@@ -40,35 +44,46 @@ class TaskL {
     void run() {
         while (in.hasNext()) {
             int n = in.nextInt();
-            if (n == -1) break;
+            if (n == 0) break;
             solve(n);
         }
     }
-
     private void solve(int n) {
         P[] ps = new P[n];
         for (int i = 0; i < n; i++) {
             ps[i] = new P(in.nextInt(), in.nextInt());
         }
-        ps = P.convexHull(ps);
-        n = ps.length;
-        if (n <= 2) {
-            out.println("0.00");
-            return ;
-        }
-        double ans = 0;
+        P[] qs = P.convexHullByAngle(ps);
+        Map<P, Integer> index = new HashMap<P, Integer>();
         for (int i = 0; i < n; i++) {
-            int j = (i + 1) % n;
-            int k = (j + 1) % n;
-            while (j != i) {
-                while (P.area(ps[i], ps[j], ps[(k + 1) % n]) > P.area(ps[i], ps[j], ps[k])) k = (k + 1) % n;
-                ans = Math.max(ans, P.area(ps[i], ps[j], ps[k]));
-                j = (j + 1) % n;
-            }
+            index.put(ps[i], i);
         }
-        out.printf("%.2f%n", ans);
+        double allArea = P.area(qs);
+        double res = P.area(P.convexHull(Arrays.copyOfRange(ps, 1, n)));
+        P[] st = new P[n];
+        for (int i = 1; i < qs.length; i++) {
+            res = Math.min(res, allArea - work(ps, qs, index, st, i));
+        }
+        out.printf("%.2f%n", res);
     }
 
+    private double work(P[] ps, P[] qs, Map<P, Integer> index, P[] st, int del) {
+        int n = ps.length;
+        int b = index.get(qs[del - 1]);
+        int e = del + 1 >= qs.length ? n : index.get(qs[del + 1]);
+        del = index.get(qs[del]);
+        int k = 0;
+        for (int i = b;  i <= e; ) {
+            if (i == del) {
+                i++;
+                continue;
+            }
+            while (k > 1 && st[k - 1].sub(st[k - 2]).det(ps[i % n].sub(st[k - 1])) < P.EPS) k--;
+            st[k++] = ps[(i++) % n];
+        }
+        st[k++] = ps[del];
+        return P.area(Arrays.copyOf(st, k));
+    }
 }
 
 class Scanner {
@@ -135,6 +150,14 @@ class P implements Comparable<P> {
         return add(x * p.y, -y * p.x);
     }
 
+    public double dot(P p) {
+        return add(x * p.x, y * p.y);
+    }
+
+    public double abs2() {
+        return dot(this);
+    }
+
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
@@ -194,6 +217,50 @@ class P implements Comparable<P> {
         System.arraycopy(qs, 0, res, 0, k - 1);
         return res;
     }
+    
+    // 按相对于 p0 的极角逆时针排序
+    // 角度相同，则离 p0 距离更近的放在前面
+    public static class CmpByAngle implements Comparator<P> {
+        P p0;
+
+        CmpByAngle(P p0) {
+            this.p0 = p0;
+        }
+
+        public int compare(P o1, P o2) {
+            double det = o1.sub(p0).det(o2.sub(p0));
+            if (det != 0) return det > 0 ? -1 : 1;
+            double dis = add(o1.sub(p0).abs2(), -o2.sub(p0).abs2());
+            if (dis != 0) return dis > 0 ? 1 : -1;
+            return 0;
+        }
+    }
+
+    public static P[] convexHullByAngle(P[] ps) {
+        int n = ps.length, k = 0;
+        if (n <= 1) return ps;
+        for (int i = 1; i < n; i++) {
+            if (ps[i].y < ps[0].y || ps[i].y == ps[0].y && ps[i].x < ps[0].x) {
+                Algo.swap(ps, 0, i);
+            }
+        }
+        Arrays.sort(ps, 1, n, new CmpByAngle(ps[0]));
+        P[] qs = new P[n];
+        for (int i = 0; i < n; qs[k++] = ps[i++]) {
+            while (k > 1 && qs[k - 1].sub(qs[k - 2]).det(ps[i].sub(qs[k - 1])) < EPS) k--;
+        }
+        return Arrays.copyOf(qs, k);
+    }
+
+}
+
+class Algo {
+
+
+    public static<T> void swap(T[] ts, int i, int j) {
+        T t = ts[i]; ts[i] = ts[j]; ts[j] = t;
+    }
+
 
 }
 

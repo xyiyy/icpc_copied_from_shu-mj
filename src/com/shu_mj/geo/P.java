@@ -8,6 +8,7 @@ import com.shu_mj.tpl.Algo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class P implements Comparable<P> {
@@ -308,6 +309,40 @@ public class P implements Comparable<P> {
         return res;
     }
 
+    // 按相对于 p0 的极角逆时针排序
+    // 角度相同，则离 p0 距离更近的放在前面
+    public static class CmpByAngle implements Comparator<P> {
+        P p0;
+
+        CmpByAngle(P p0) {
+            this.p0 = p0;
+        }
+
+        @Override
+        public int compare(P o1, P o2) {
+            double det = o1.sub(p0).det(o2.sub(p0));
+            if (det != 0) return det > 0 ? -1 : 1;
+            double dis = add(o1.sub(p0).abs2(), -o2.sub(p0).abs2());
+            if (dis != 0) return dis > 0 ? 1 : -1;
+            return 0;
+        }
+    }
+
+    public static P[] convexHullByAngle(P[] ps) {
+        int n = ps.length, k = 0;
+        if (n <= 1) return ps;
+        for (int i = 1; i < n; i++) {
+            if (ps[i].y < ps[0].y || ps[i].y == ps[0].y && ps[i].x < ps[0].x) {
+                Algo.swap(ps, 0, i);
+            }
+        }
+        Arrays.sort(ps, 1, n, new CmpByAngle(ps[0]));
+        P[] qs = new P[n];
+        for (int i = 0; i < n; qs[k++] = ps[i++]) {
+            while (k > 1 && qs[k - 1].sub(qs[k - 2]).det(ps[i].sub(qs[k - 1])) < EPS) k--;
+        }
+        return Arrays.copyOf(qs, k);
+    }
     //凸多边形的切断
     //返回 p1p2 左侧凸包
     public static P[] convexCut(P[] ps, P p1, P p2) {
