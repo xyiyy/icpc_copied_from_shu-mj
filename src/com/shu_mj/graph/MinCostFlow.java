@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
  * Created by Jun on 6/15/2014.
  */
 public class MinCostFlow {
-    public static int INF = Integer.MAX_VALUE / 4;
+    public static final int INF = Integer.MAX_VALUE / 4;
 
     public static int minCostFlow(V[] vs, V s, V t, int flow) {
         int res = 0;

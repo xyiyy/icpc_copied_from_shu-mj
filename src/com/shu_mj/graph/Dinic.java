@@ -8,11 +8,12 @@ import java.util.Queue;
  * Created by Jun on 6/27/2014.
  */
 public class Dinic {
-    public static int INF = Integer.MAX_VALUE / 4;
+    public static final int INF = Integer.MAX_VALUE / 4;
+    public static int p = 0;
 
     public static int dinic(V s, V t) {
         int flow = 0;
-        for (int p = 1; ; p++) {
+        for (p++; ; p++) {
             Queue<V> que = new LinkedList<V>();
             s.level = 0;
             s.p = p;

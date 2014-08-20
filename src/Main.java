@@ -1,13 +1,13 @@
-import java.util.LinkedList;
 import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.io.BufferedReader;
-import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.math.BigInteger;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Queue;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -22,13 +22,13 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		Task2 solver = new Task2();
+		Task3 solver = new Task3();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class Task2 {
+class Task3 {
     Scanner in;
     PrintWriter out;
 
@@ -39,42 +39,32 @@ class Task2 {
     }
 
     void run() {
-        int m = in.nextInt();
         int n = in.nextInt();
-        int[] mv = new int[m];
-        int[] nv = new int[n];
-        Dinic.V[] vs = new Dinic.V[n + m + 2];
+        int m = in.nextInt();
+        BipartiteMatching.V[] vs = new BipartiteMatching.V[n * 2];
+        Map<BipartiteMatching.V, Integer> index = new HashMap<BipartiteMatching.V, Integer>();
         for (int i = 0; i < vs.length; i++) {
-            vs[i] = new Dinic.V();
+            vs[i] = new BipartiteMatching.V();
+            index.put(vs[i], i);
         }
-        Dinic.V s = vs[n + m];
-        Dinic.V t = vs[n + m + 1];
-        int total = 0;
         for (int i = 0; i < m; i++) {
-            String[] ss = in.nextLine().split(" ");
-            int sn = ss.length;
-            int[] is = new int[sn];
-            for (int j = 0; j < sn; j++) is[j] = Integer.parseInt(ss[j]);
-            int val = is[0];
-            total += val;
-            s.add(vs[i], val);
-            for (int j = 1; j < sn; j++) {
-                vs[i].add(vs[m + is[j] - 1], Dinic.INF);
+            int u = in.nextInt() - 1;
+            int v = in.nextInt() - 1;
+            vs[u].connect(vs[v + n]);
+        }
+        int ans = BipartiteMatching.bipartiteMatching(vs);
+        boolean[] vis = new boolean[n];
+        for (int i = 0; i < n; i++) if (!vis[i] && vs[i + n].pair == null) {
+            int u = i;
+            for (;;) {
+                out.print((u + 1) + " ");
+                vis[u] = true;
+                if (vs[u].pair == null) break;
+                u = index.get(vs[u].pair) - n;
             }
+            out.println();
         }
-        for (int i = 0; i < n; i++) {
-            vs[m + i].add(t, in.nextInt());
-        }
-        int ans = total - Dinic.dinic(s, t);
-        for (int i = 0; i < m; i++) {
-            if (vs[i].p == s.p) out.print((i + 1) + " ");
-        }
-        out.println();
-        for (int i = 0; i < n; i++) {
-            if (vs[i + m].p == s.p) out.print((i + 1) + " ");
-        }
-        out.println();
-        out.println(ans);
+        out.println(n - ans);
     }
 }
 
@@ -120,70 +110,41 @@ class Scanner {
 
 }
 
-class Dinic {
-    public static int INF = Integer.MAX_VALUE / 4;
-
-    public static int dinic(V s, V t) {
-        int flow = 0;
-        for (int p = 1; ; p++) {
-            Queue<V> que = new LinkedList<V>();
-            s.level = 0;
-            s.p = p;
-            que.offer(s);
-            while (!que.isEmpty()) {
-                V v = que.poll();
-                v.iter = v.es.size() - 1;
-                for (E e : v.es)
-                    if (e.to.p < p && e.cap > 0) {
-                        e.to.level = v.level + 1;
-                        e.to.p = p;
-                        que.offer(e.to);
-                    }
+class BipartiteMatching {
+    public static int bipartiteMatching(V[] vs) {
+        int match = 0;
+        for (V v : vs)
+            if (v.pair == null) {
+                for (V u : vs) u.used = false;
+                if (dfs(v)) match++;
             }
-            if (t.p < p) return flow;
-            for (int f; (f = dfs(s, t, INF)) > 0; ) flow += f;
-        }
+        return match;
     }
 
-    public static int dfs(V v, V t, int f) {
-        if (v == t) return f;
-        for (; v.iter >= 0; v.iter--) {
-            E e = v.es.get(v.iter);
-            if (v.level < e.to.level && e.cap > 0) {
-                int d = dfs(e.to, t, Math.min(f, e.cap));
-                if (d > 0) {
-                    e.cap -= d;
-                    e.rev.cap += d;
-                    return d;
-                }
+    public static boolean dfs(V v) {
+        v.used = true;
+        for (V u : v.vs) {
+            u.used = true;
+            V w = u.pair;
+            if (w == null || !w.used && dfs(w)) {
+                v.pair = u;
+                u.pair = v;
+                return true;
             }
         }
-        return 0;
+        return false;
     }
 
     public static class V {
-        public ArrayList<E> es = new ArrayList<E>();
-        public int level;
-        public int p;
-        public int iter;
-        public void add(V to, int cap) {
-            E e = new E(to, cap), rev = new E(this, 0);
-            e.rev = rev;
-            rev.rev = e;
-            es.add(e);
-            to.es.add(rev);
-        }
-    }
+        public List<V> vs = new ArrayList<V>();
+        public V pair;
+        public boolean used;
 
-    public static class E {
-        public V to;
-        public E rev;
-        public int cap;
-
-        public E(V to, int cap) {
-            this.to = to;
-            this.cap = cap;
+        public void connect(V v) {
+            vs.add(v);
+            v.vs.add(this);
         }
+
     }
 }
 

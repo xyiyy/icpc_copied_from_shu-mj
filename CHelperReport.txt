@@ -1,4 +1,13 @@
-19 src/main/Task2.task
+19 src/main/Task3.task
+11
+0
+1
 2
+3
+4
 5
+6
+7
+8
+9
 10
