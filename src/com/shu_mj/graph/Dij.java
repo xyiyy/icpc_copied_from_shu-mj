@@ -24,7 +24,7 @@ public class Dij {
         }
     }
 
-    public static int INF = 1 << 29;
+    public static final int INF = 1 << 29;
 
     public static class V {
         public ArrayList<E> es = new ArrayList<E>();
