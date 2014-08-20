@@ -1,6 +1,7 @@
 package com.shu_mj.graph;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jun on 6/27/2014.
@@ -18,7 +19,7 @@ public class BipartiteMatching {
 
     public static boolean dfs(V v) {
         v.used = true;
-        for (V u : v) {
+        for (V u : v.vs) {
             u.used = true;
             V w = u.pair;
             if (w == null || !w.used && dfs(w)) {
@@ -30,13 +31,15 @@ public class BipartiteMatching {
         return false;
     }
 
-    public static class V extends ArrayList<V> {
+    public static class V {
+        public List<V> vs = new ArrayList<V>();
         public V pair;
         public boolean used;
 
         public void connect(V v) {
-            add(v);
-            v.add(this);
+            vs.add(v);
+            v.vs.add(this);
         }
+
     }
 }

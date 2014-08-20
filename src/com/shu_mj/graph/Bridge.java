@@ -22,7 +22,7 @@ public class Bridge {
         v.num = c;
         int low = c;
         boolean rev = false;
-        for (V u : v) {
+        for (V u : v.vs) {
             if (u.num < 0) {
                 int t = dfs(u, c + 1);
                 low = Math.min(low, t);
@@ -33,13 +33,14 @@ public class Bridge {
         }
         return low;
     }
-    public static class V extends ArrayList<V> {
+    public static class V {
+        public List<V> vs = new ArrayList<V>();
         public int num = -1;
         public int count;
 
         public void connect(V u) {
-            add(u);
-            u.add(this);
+            vs.add(u);
+            u.vs.add(this);
         }
     }
 
