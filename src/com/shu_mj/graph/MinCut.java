@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class MinCut {
     public static final int INF = Integer.MAX_VALUE / 4;
 
+    // O(n^3)
     public static int minCut(int[][] c) {
         int n = c.length, cut = INF;
         int[] id = new int[n], b = new int[n];
