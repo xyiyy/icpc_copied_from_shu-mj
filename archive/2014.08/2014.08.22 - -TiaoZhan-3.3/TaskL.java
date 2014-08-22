@@ -1,30 +1,9 @@
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.math.BigInteger;
-import java.io.OutputStream;
+package main;
+
+import com.shu_mj.tpl.Scanner;
 import java.io.PrintWriter;
-import java.io.IOException;
-import java.util.StringTokenizer;
 
-/**
- * Built using CHelper plug-in
- * Actual solution is at the top
- * @author shu_mj @ http://shu-mj.com
- */
-public class Main {
-	public static void main(String[] args) {
-		InputStream inputStream = System.in;
-		OutputStream outputStream = System.out;
-		Scanner in = new Scanner(inputStream);
-		PrintWriter out = new PrintWriter(outputStream);
-		TaskL solver = new TaskL();
-		solver.solve(1, in, out);
-		out.close();
-	}
-}
-
-class TaskL {
+public class TaskL {
     Scanner in;
     PrintWriter out;
 
@@ -153,50 +132,118 @@ class TaskL {
         T(int count) {
             this(count, NULL, NULL, NULL, NULL);
         }
+        T change(T topLeft, T topRight, T bottomLeft, T bottomRight) {
+            this.topLeft = topLeft;
+            this.topRight = topRight;
+            this.bottomLeft = bottomLeft;
+            this.bottomRight = bottomRight;
+            this.count = topLeft.count + topRight.count + bottomLeft.count + bottomRight.count;
+            return this;
+        }
     }
     static final T NULL = new T(0, null, null, null, null);
 
-}
+    static class A {
+        final int ax;
+        final int ay;
+        final int bx;
+        final int by;
 
-class Scanner {
-    BufferedReader br;
-    StringTokenizer st;
+        A(int ax, int ay, int bx, int by) {
+            this.ax = ax;
+            this.ay = ay;
+            this.bx = bx;
+            this.by = by;
+        }
+        boolean haveSameArea(A a) {
+            return ax < a.bx && ay < a.by && bx > a.ax && by > a.ay;
+        }
+        boolean contains(int x, int y) {
+            return x >= ax && y >= ay && x < bx && y < by;
+        }
+        boolean inside(A a) {
+            return ax >= a.ax && ay >= a.ay && bx <= a.bx && by <= a.by;
+        }
+        A topLeft() {
+            return new A(ax, (ay + by) / 2, (ax + bx) / 2, by);
+        }
+        A topRight() {
+            return new A((ax + bx) / 2, (ay + by) / 2, bx, by);
+        }
+        A bottomLeft() {
+            return new A(ax, ay, (ax + bx) / 2, (ay + by) / 2);
+        }
+        A bottomRight() {
+            return new A((ax + bx) / 2, ay, bx, (ay + by) / 2);
+        }
 
-    public Scanner(InputStream in) {
-        br = new BufferedReader(new InputStreamReader(in));
-        eat("");
+        @Override
+        public String toString() {
+            return "A{" +
+                    "ax=" + ax +
+                    ", ay=" + ay +
+                    ", bx=" + bx +
+                    ", by=" + by +
+                    '}';
+        }
+
+        public long area() {
+            return (long) (bx - ax) * (by - ay);
+        }
     }
+    static class Mat {
+        int N;
+        T root;
+        Mat(int n, int m) {
+            N = Integer.highestOneBit(Math.max(n, m)) << 1;
+            root = new T(0);
+        }
+        void add(int x, int y) {
+            root = add(root, new A(0, 0, N, N), x, y);
+        }
+        T add(T t, A a, int x, int y) {
+            for (;;) {
+                t.count++;
+                if (a.area() == 1) break;
+                if (a.topLeft().contains(x, y)) {
+                    a = a.topLeft();
+                    if (t.topLeft == NULL) t.topLeft = new T(0);
+                    t = t.topLeft;
+                } else if (a.topRight().contains(x, y)) {
+                    a = a.topRight();
+                    if (t.topRight == NULL) t.topRight = new T(0);
+                    t = t.topRight;
+                } else if (a.bottomLeft().contains(x, y)) {
+                    a = a.bottomLeft();
+                    if (t.bottomLeft == NULL) t.bottomLeft = new T(0);
+                    t = t.bottomLeft;
+                } else if (a.bottomRight().contains(x, y)) {
+                    a = a.bottomRight();
+                    if (t.bottomRight == NULL) t.bottomRight = new T(0);
+                    t = t.bottomRight;
+                } else {
+                    break;
+                }
+            }
+            return root;
+        }
 
-    private void eat(String s) {
-        st = new StringTokenizer(s);
-    }
-
-    public String nextLine() {
-        try {
-            return br.readLine();
-        } catch (IOException e) {
-            return null;
+        int query(int x, int y) {
+            return query(0, y, x, N) + query(x, 0, N, y);
+        }
+        int query(int ax, int ay, int bx, int by) {
+            return query(root, new A(0, 0, N, N), new A(ax, ay, bx, by));
+        }
+        int query(T t, A ta, A qa) {
+            if (t == NULL || !ta.haveSameArea(qa)) return 0;
+            if (ta.inside(qa)) return t.count;
+            int res = 0;
+            res += query(t.topLeft, ta.topLeft(), qa);
+            res += query(t.topRight, ta.topRight(), qa);
+            res += query(t.bottomLeft, ta.bottomLeft(), qa);
+            res += query(t.bottomRight, ta.bottomRight(), qa);
+            return res;
         }
     }
 
-    public boolean hasNext() {
-        while (!st.hasMoreTokens()) {
-            String s = nextLine();
-            if (s == null)
-                return false;
-            eat(s);
-        }
-        return true;
-    }
-
-    public String next() {
-        hasNext();
-        return st.nextToken();
-    }
-
-    public int nextInt() {
-        return Integer.parseInt(next());
-    }
-
 }
-

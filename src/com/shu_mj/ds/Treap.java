@@ -3,31 +3,34 @@ package com.shu_mj.ds;
 /**
  * Created by Jun on 6/6/2014.
  */
-public class T {
-    public int key, size;
-    public double p;
-    public T left, right;
+public class Treap {
 
-    public T(int key, int size, double p, T left, T right) {
-        this.key = key;
-        this.size = size;
-        this.p = p;
-        this.left = left;
-        this.right = right;
-    }
+    public static class T {
+        public int key, size;
+        public double p;
+        public T left, right;
 
-    public T(int key) {
-        this(key, 1, Math.random(), NULL, NULL);
+        public T(int key, int size, double p, T left, T right) {
+            this.key = key;
+            this.size = size;
+            this.p = p;
+            this.left = left;
+            this.right = right;
+        }
+
+        public T(int key) {
+            this(key, 1, Math.random(), NULL, NULL);
+        }
+
+        public T change(T left, T right) {
+            size = left.size + right.size + 1;
+            this.left = left;
+            this.right = right;
+            return this;
+        }
     }
 
     public static final T NULL = new T(0, 0, 0, null, null);
-
-    public T change(T left, T right) {
-        size = left.size + right.size + 1;
-        this.left = left;
-        this.right = right;
-        return this;
-    }
 
     public static T[] splitSize(T t, int size) {
         T[] res;
