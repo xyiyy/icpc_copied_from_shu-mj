@@ -1,13 +1,13 @@
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.io.BufferedReader;
 import java.util.List;
-import java.util.Map;
 import java.math.BigInteger;
+import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -22,13 +22,13 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		Task3 solver = new Task3();
+		TaskK solver = new TaskK();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class Task3 {
+class TaskK {
     Scanner in;
     PrintWriter out;
 
@@ -39,32 +39,23 @@ class Task3 {
     }
 
     void run() {
+        while (in.hasNext()) {
+            solve();
+        }
+    }
+
+    private void solve() {
         int n = in.nextInt();
         int m = in.nextInt();
-        BipartiteMatching.V[] vs = new BipartiteMatching.V[n * 2];
-        Map<BipartiteMatching.V, Integer> index = new HashMap<BipartiteMatching.V, Integer>();
-        for (int i = 0; i < vs.length; i++) {
-            vs[i] = new BipartiteMatching.V();
-            index.put(vs[i], i);
-        }
+        int[][] c = new int[n][n];
         for (int i = 0; i < m; i++) {
-            int u = in.nextInt() - 1;
-            int v = in.nextInt() - 1;
-            vs[u].connect(vs[v + n]);
+            int u = in.nextInt();
+            int v = in.nextInt();
+            int w = in.nextInt();
+            c[u][v] += w;
+            c[v][u] += w;
         }
-        int ans = BipartiteMatching.bipartiteMatching(vs);
-        boolean[] vis = new boolean[n];
-        for (int i = 0; i < n; i++) if (!vis[i] && vs[i + n].pair == null) {
-            int u = i;
-            for (;;) {
-                out.print((u + 1) + " ");
-                vis[u] = true;
-                if (vs[u].pair == null) break;
-                u = index.get(vs[u].pair) - n;
-            }
-            out.println();
-        }
-        out.println(n - ans);
+        out.println(MinCut.minCut(c));
     }
 }
 
@@ -110,41 +101,40 @@ class Scanner {
 
 }
 
-class BipartiteMatching {
-    public static int bipartiteMatching(V[] vs) {
-        int match = 0;
-        for (V v : vs)
-            if (v.pair == null) {
-                for (V u : vs) u.used = false;
-                if (dfs(v)) match++;
-            }
-        return match;
-    }
+class MinCut {
+    public static final int INF = Integer.MAX_VALUE / 4;
 
-    public static boolean dfs(V v) {
-        v.used = true;
-        for (V u : v.vs) {
-            u.used = true;
-            V w = u.pair;
-            if (w == null || !w.used && dfs(w)) {
-                v.pair = u;
-                u.pair = v;
-                return true;
+    public static int minCut(int[][] c) {
+        int n = c.length, cut = INF;
+        int[] id = new int[n], b = new int[n];
+        for (int i = 0; i < n; i++) id[i] = i;
+        for (; n > 1; n--) {
+            Arrays.fill(b, 0);
+            for (int i = 0; i + 1 < n; i++) {
+                int p = i + 1;
+                for (int j = i + 1; j < n; j++) {
+                    b[id[j]] += c[id[i]][id[j]];
+                    if (b[id[p]] < b[id[j]]) p = j;
+                }
+                Algo.swap(id, i + 1, p);
+            }
+            cut = Math.min(cut, b[id[n - 1]]);
+            for (int i = 0; i < n - 2; i++) {
+                c[id[i]][id[n - 2]] += c[id[i]][id[n - 1]];
+                c[id[n - 2]][id[i]] += c[id[n - 1]][id[i]];
             }
         }
-        return false;
+        return cut;
+    }
+}
+
+class Algo {
+
+
+    public static void swap(int[] is, int i, int j) {
+        int t = is[i]; is[i] = is[j]; is[j] = t;
     }
 
-    public static class V {
-        public List<V> vs = new ArrayList<V>();
-        public V pair;
-        public boolean used;
 
-        public void connect(V v) {
-            vs.add(v);
-            v.vs.add(this);
-        }
-
-    }
 }
 

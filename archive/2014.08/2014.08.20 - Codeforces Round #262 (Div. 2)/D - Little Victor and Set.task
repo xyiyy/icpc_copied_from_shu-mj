@@ -1,0 +1,37 @@
+25 D - Little Victor and Set
+6 SINGLE
+8 STANDARD
+-1
+8 STANDARD
+-1
+2
+0
+7 8 15 3
+
+10 1
+2
+10 11
+
+1
+1
+7 8 30 7
+
+18 0
+5
+14 9 28 11 16
+
+1
+8 src/main
+8 -Xmx256M
+4 Main
+10 main.TaskD
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2014.08.20
+30 Codeforces Round #262 (Div. 2)
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+0

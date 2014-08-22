@@ -22,16 +22,12 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        P[] ps = new P[12];
-        ps[0] = new P(0, 0);
-        ps[1] = new P(1, 0);
-        ps[2] = new P(2, 0);
-        ps[3] = new P(2, 1);
-        ps[4] = new P(1, 1);
-        ps[5] = new P(0, 1);
-        for (int i = 6; i < 12; i++) ps[i] = ps[i < 9 ? i - 6 : i - 9];
-        ps = P.convexHull(ps);
-        Algo.debug(ps);
+        List<Integer> list = new ArrayList<Integer>();
+        for (int i = 0; i < 50; i++) {
+            list.add(i);
+        }
+        Collections.shuffle(list);
+        for (int i : list) out.print(i + " ");
     }
 
     public static void main(String[] args) {
