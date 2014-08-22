@@ -2,12 +2,9 @@ import java.util.Arrays;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.util.List;
 import java.math.BigInteger;
-import java.io.PrintStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.Comparator;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -22,13 +19,13 @@ public class Main {
 		OutputStream outputStream = System.out;
 		Scanner in = new Scanner(inputStream);
 		PrintWriter out = new PrintWriter(outputStream);
-		TaskK solver = new TaskK();
+		Task4973 solver = new Task4973();
 		solver.solve(1, in, out);
 		out.close();
 	}
 }
 
-class TaskK {
+class Task4973 {
     Scanner in;
     PrintWriter out;
 
@@ -39,7 +36,9 @@ class TaskK {
     }
 
     void run() {
-        while (in.hasNext()) {
+        int t = in.nextInt();
+        for (int i = 1; i <= t; i++) {
+            out.printf("Case #%d:%n", i);
             solve();
         }
     }
@@ -47,16 +46,111 @@ class TaskK {
     private void solve() {
         int n = in.nextInt();
         int m = in.nextInt();
-        int[][] c = new int[n][n];
-        for (int i = 0; i < m; i++) {
-            int u = in.nextInt();
-            int v = in.nextInt();
-            int w = in.nextInt();
-            c[u][v] += w;
-            c[v][u] += w;
+        Seg seg = new Seg(n);
+        while (m-- != 0) {
+            char c = in.next().charAt(0);
+            long s = in.nextLong() - 1;
+            long t = in.nextLong();
+            if (c == 'D') {
+                seg.update(s, t, 2);
+            } else { // Q
+                out.println(seg.query(s, t));
+            }
         }
-        out.println(MinCut.minCut(c));
     }
+
+    static class Seg {
+        public int N;
+        public long[] infos;
+        public long[] sizes;
+        public long[] deltas;
+        public static final long DEFAULT_INFO = 1;
+        public static final long DEFAULT_SIZE = 1;
+        public static final long DEFAULT_DELTA = 1;
+
+        public Seg(int n) {
+            N = Integer.highestOneBit(n) << 1;
+            infos = new long[N * 2];
+            sizes = new long[N * 2];
+            deltas = new long[N * 2];
+            Arrays.fill(deltas, DEFAULT_DELTA);
+            for (int i = N; i < N * 2; i++) {
+                infos[i] = DEFAULT_INFO;
+                sizes[i] = DEFAULT_SIZE;
+            }
+            for (int i = N - 1; i > 0; i--) {
+                pushUp(i);
+            }
+        }
+
+        public long mergeSize(long a, long b) {
+            return a + b;
+        }
+        public long mergeInfo(long a, long b) {
+            return Math.max(a, b);
+        }
+
+        public void pushUp(int o) {
+            infos[o] = mergeInfo(infos[o * 2], infos[o * 2 + 1]);
+            sizes[o] = mergeSize(sizes[o * 2], sizes[o * 2 + 1]);
+        }
+
+        public void push(int o, long l, long r, long a) {
+            sizes[o] *= a;
+            infos[o] *= a;
+            deltas[o] *= a;
+        }
+
+        public long query(long s, long t) {
+            return query(1, 0, sizes[1], s, t);
+        }
+
+        long query(int o, long l, long r, long s, long t) {
+            if (o >= N) {
+                return t - s;
+            } else if (s <= l && r <= t) {
+                // 如果 [l, r) 和 [s, t) 不同，需要修改
+                return infos[o];
+            } else {
+                pushDown(o, l, r);
+                long m = l + sizes[o * 2];
+                if (t <= m) return query(o * 2, l, m, s, t);
+                if (s >= m) return query(o * 2 + 1, m, r, s, t);
+                return mergeInfo(query(o * 2, l, m, s, m), query(o * 2 + 1, m, r, m, t));
+            }
+        }
+
+        public void update(long s, long t, long a) {
+            update(1, 0, sizes[1], s, t, a);
+        }
+
+        void update(int o, long l, long r, long s, long t, long a) {
+            if (o >= N) {
+                sizes[o] += t - s;
+                infos[o] += t - s;
+            } else if (s <= l && r <= t) {
+                // 如果 [l, r) 和 [s, t) 不同，需要修改
+                push(o, l, r, a);
+            } else {
+                pushDown(o, l, r);
+                long m = l + sizes[o * 2];
+                if (s < m) update(o * 2, l, m, s, Math.min(m, t), a);
+                if (t > m) update(o * 2 + 1, m, r, Math.max(s, m), t, a);
+                pushUp(o);
+            }
+        }
+
+        public void pushDown(int o, long l, long r) {
+            if (deltas[o] != DEFAULT_DELTA) {
+                long m = (l + r) / 2;
+                push(o * 2, l, m, deltas[o]);
+                push(o * 2 + 1, m, r, deltas[o]);
+                deltas[o] = DEFAULT_DELTA;
+            }
+        }
+
+    }
+
 }
 
 class Scanner {
@@ -99,42 +193,9 @@ class Scanner {
         return Integer.parseInt(next());
     }
 
-}
-
-class MinCut {
-    public static final int INF = Integer.MAX_VALUE / 4;
-
-    public static int minCut(int[][] c) {
-        int n = c.length, cut = INF;
-        int[] id = new int[n], b = new int[n];
-        for (int i = 0; i < n; i++) id[i] = i;
-        for (; n > 1; n--) {
-            Arrays.fill(b, 0);
-            for (int i = 0; i + 1 < n; i++) {
-                int p = i + 1;
-                for (int j = i + 1; j < n; j++) {
-                    b[id[j]] += c[id[i]][id[j]];
-                    if (b[id[p]] < b[id[j]]) p = j;
-                }
-                Algo.swap(id, i + 1, p);
-            }
-            cut = Math.min(cut, b[id[n - 1]]);
-            for (int i = 0; i < n - 2; i++) {
-                c[id[i]][id[n - 2]] += c[id[i]][id[n - 1]];
-                c[id[n - 2]][id[i]] += c[id[n - 1]][id[i]];
-            }
-        }
-        return cut;
+    public long nextLong() {
+        return Long.parseLong(next());
     }
-}
-
-class Algo {
-
-
-    public static void swap(int[] is, int i, int j) {
-        int t = is[i]; is[i] = is[j]; is[j] = t;
-    }
-
 
 }
 

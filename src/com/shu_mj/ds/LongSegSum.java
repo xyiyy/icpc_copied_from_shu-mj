@@ -40,7 +40,7 @@ public class LongSegSum {
         mul[o] = m * mul[o];
         add[o] = m * add[o] + a;
         if (t <= L || R <= s || s <= L && R <= t) {
-            // maintain is[o] for m, a
+            // maintain infos[o] for m, a
             ls[o] = m * ls[o] + a * (R - L); // need change
         } else {
             int M = (L + R) / 2;
@@ -64,7 +64,7 @@ public class LongSegSum {
         mul[o] = m * mul[o];
         add[o] = m * add[o] + a;
         if (t <= L || R <= s || s <= L && R <= t) {
-            // maintain is[o] for m, a
+            // maintain infos[o] for m, a
             ls[o] = m * ls[o] + a * (R - L); // need change
             if (t <= L || R <= s) return 0;
             return ls[o];

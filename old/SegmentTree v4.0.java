@@ -5,7 +5,7 @@ class Seg {
 	Seg(int n) {
 		N = Integer.highestOneBit(n) << 1;
 		is = new long[N * 2];
-		// ³õÊ¼»¯¹ý³Ì ¸ù¾ÝÐèÒªÐÞ¸Ä
+		// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½Þ¸ï¿½
 		for (int i = 0; i < n; i++)
 			is[N + i] = in.nextLong();
 		for (int i = N - 1; i > 0; i--)
@@ -36,8 +36,8 @@ class Seg {
 		mul[o] = m * mul[o];
 		add[o] = m * add[o] + a;
 		if (t <= L || R <= s || s <= L && R <= t) {
-			// maintain is[o] for m, a
-			is[o] = m * is[o] + a * (R - L); // ¸ù¾ÝÎ¬»¤ÐÅÏ¢ÐÞ¸Ä
+			// maintain infos[o] for m, a
+			is[o] = m * is[o] + a * (R - L); // ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Þ¸ï¿½
 		} else {
 			int M = (L + R) / 2;
 			update(o * 2, L, M, mul[o], add[o]);
@@ -51,7 +51,7 @@ class Seg {
 
 	long query(int s, int t) {
 		update(s, t, 1, 0);
-		long res = 0; // ³õÊ¼»¯ ¸ù¾ÝÎ¬»¤ÐÅÏ¢ÐÞ¸Ä
+		long res = 0; // ï¿½ï¿½Ê¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Þ¸ï¿½
 		while (0 < s && s + (s & -s) <= t) {
 			int i = (N + s) / (s & -s);
 			res = merge(res, is[i]);
@@ -66,10 +66,10 @@ class Seg {
 	}
 
 	long merge(long a, long b) {
-		return a + b; // ¸ù¾ÝÎ¬»¤ÐÅÏ¢ÐÞ¸Ä
+		return a + b; // ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Þ¸ï¿½
 	}
 
-	// ºóÃæÊÇÁíÒ»ÖÖ update ÊµÏÖ£¬»áÂýÒ»µã
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ update Êµï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 	void update(int o, int L, int R) {
 		if (s <= L && R <= t) {
 			push(m, a, o);
@@ -96,7 +96,7 @@ class Seg {
 	}
 
 	void push(long m, long a, int o) {
-		is[o] = m * is[o] + size(o) * a; // ¸ù¾ÝÎ¬»¤ÐÅÏ¢ÐÞ¸Ä
+		is[o] = m * is[o] + size(o) * a; // ï¿½ï¿½ï¿½ï¿½Î¬ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Þ¸ï¿½
 		mul[o] *= m;
 		add[o] = m * add[o] + a;
 	}
