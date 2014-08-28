@@ -147,39 +147,39 @@ public class Num {
             return 0;
         if (2 * m > n)
             m = n - m;
-        long result = 1;
+        long res = 1;
         for (int i = n - m + 1; i <= n; i++)
-            result = result * i % mod;
-        return result * BigInteger.valueOf(factorial(m, mod)).modInverse(BigInteger.valueOf(mod)).longValue() % mod;
+            res = res * i % mod;
+        return res * BigInteger.valueOf(factorial(m, mod)).modInverse(BigInteger.valueOf(mod)).longValue() % mod;
     }
 
     public static long[][] combinationTable(int n) {
-        long[][] result = new long[n + 1][n + 1];
+        long[][] res = new long[n + 1][n + 1];
         for (int i = 0; i <= n; i++) {
-            result[i][0] = 1;
+            res[i][0] = 1;
             for (int j = 1; j <= i; j++)
-                result[i][j] = result[i - 1][j - 1] + result[i - 1][j];
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
         }
-        return result;
+        return res;
     }
 
-    public static long[][] combinationTable(int n, long module) {
-        long[][] result = new long[n + 1][n + 1];
-        if (module == 1)
-            return result;
+    public static long[][] combinationTable(int n, long mod) {
+        long[][] res = new long[n + 1][n + 1];
+        if (mod == 1)
+            return res;
         for (int i = 0; i <= n; i++) {
-            result[i][0] = 1;
+            res[i][0] = 1;
             for (int j = 1; j <= i; j++) {
-                result[i][j] = result[i - 1][j - 1] + result[i - 1][j];
-                if (result[i][j] >= module)
-                    result[i][j] -= module;
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+                if (res[i][j] >= mod)
+                    res[i][j] -= mod;
             }
         }
-        return result;
+        return res;
     }
 
     public static long[] combinationRowTable(int n, long mod) {
-        long[] res = reverseTable(n, mod);
+        long[] res = invFactorialTable(n, mod);
         res[0] = 1;
         for (int i = 1; i <= n; i++) {
             res[i] = res[i - 1] * (n - i + 1) % mod * res[i] % mod;
@@ -204,7 +204,7 @@ public class Num {
         return res;
     }
 
-    public static long[] reverseTable(int n, long mod) {
+    public static long[] invFactorialTable(int n, long mod) {
         long[] res = new long[n + 1];
         if (n >= 1) res[1] = 1;
         for (int i = 2; i <= n; i++)
@@ -213,17 +213,17 @@ public class Num {
     }
 
     public static long factorial(int n) {
-        long result = 1;
+        long res = 1;
         for (int i = 2; i <= n; i++)
-            result *= i;
-        return result;
+            res *= i;
+        return res;
     }
 
     public static long factorial(int n, long mod) {
-        long result = 1;
+        long res = 1;
         for (int i = 2; i <= n; i++)
-            result = result * i % mod;
-        return result % mod;
+            res = res * i % mod;
+        return res % mod;
     }
 
     public static long[] factorialTable(int n, long mod) {
@@ -237,11 +237,11 @@ public class Num {
 
     public static long pow(long p, int e) {
         long res = 1;
-        for (; ; ) {
-            if ((e & 1) != 0) res = res * p;
-            e >>= 1;
-            if (e == 0) break;
+        while (e != 0) {
+            if ((e & 1L) != 0) res = res * p;
             p = p * p;
+//            p = p * p % mod;
+            e >>= 1;
         }
         return res;
     }
@@ -256,69 +256,17 @@ public class Num {
         }
         return res;
     }
+
+    public static long[] powTable(long p, int n, long mod) {
+        long[] res = new long[n + 1];
+        res[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            res[i] = res[i - 1] * p % mod;
+        }
+        return res;
+    }
     public static long mul(long a, long b, long mod) {
         return BigInteger.valueOf(a).multiply(BigInteger.valueOf(b)).mod(BigInteger.valueOf(mod)).longValue();
-    }
-
-    public static long[] powerTable(long base, int count, long mod) {
-        long[] result = new long[count];
-        if (mod != -1) {
-            if (count != 0)
-                result[0] = 1 % mod;
-            for (int i = 1; i < count; i++)
-                result[i] = result[i - 1] * base % mod;
-        } else {
-            if (count != 0)
-                result[0] = 1;
-            for (int i = 1; i < count; i++)
-                result[i] = result[i - 1] * base;
-        }
-        return result;
-    }
-
-    public static long[] powerTable(long base, long maxValue) {
-        if (maxValue <= 0)
-            return new long[0];
-        int size = 1;
-        long current = 1;
-        while (maxValue / base >= current) {
-            current *= base;
-            size++;
-        }
-        return powerTable(base, size, Long.MAX_VALUE);
-    }
-
-    public static long[] fibonacciTable(long upTo) {
-        int count = 0;
-        long last = 0;
-        long current = 1;
-        while (current <= upTo) {
-            long next = last + current;
-            last = current;
-            current = next;
-            count++;
-        }
-        return fibonacciTable(count, -1);
-    }
-
-    public static long[] fibonacciTable(int count, long module) {
-        long[] result = new long[count];
-        if (module == -1) {
-            if (count != 0)
-                result[0] = 1;
-            if (count > 1)
-                result[1] = 1;
-            for (int i = 2; i < count; i++)
-                result[i] = result[i - 1] + result[i - 2];
-        } else {
-            if (count != 0)
-                result[0] = 1 % module;
-            if (count > 1)
-                result[1] = 1 % module;
-            for (int i = 2; i < count; i++)
-                result[i] = (result[i - 1] + result[i - 2]) % module;
-        }
-        return result;
     }
 
     public static long inv(long a, long mod) {
@@ -380,8 +328,7 @@ public class Num {
         Map<Long, Integer> map = new HashMap<Long, Integer>();
         for (long i = 2; i * i <= n; i++) {
             while (n % i == 0) {
-                if (!map.containsKey(i)) map.put(i, 1);
-                else map.put(i, map.get(i) + 1);
+                inc(map, i);
                 n /= i;
             }
         }
