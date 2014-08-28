@@ -28,6 +28,10 @@ public class Treap {
             this.right = right;
             return this;
         }
+        public T push() {
+
+            return this;
+        }
     }
 
     public static final T NULL = new T(0, 0, 0, null, null);
@@ -36,7 +40,7 @@ public class Treap {
         T[] res;
         if (size <= 0) {
             res = new T[] { NULL, t };
-        } else if (size <= t.left.size) {
+        } else if (size <= t.push().left.size) {
             res = splitSize(t.left, size);
             res[1] = t.change(res[1], t.right);
         } else {
@@ -50,7 +54,7 @@ public class Treap {
         T[] res;
         if (t == NULL) {
             res = new T[] { NULL, NULL };
-        } else if (key < t.key) {
+        } else if (key < t.push().key) {
             res = splitKey(t.left, key);
             res[1] = t.change(res[1], t.right);
         } else {
@@ -62,7 +66,7 @@ public class Treap {
 
     public static void print(T t, String indent) {
         if (t != NULL) {
-            print(t.right, indent + "      ");
+            print(t.push().right, indent + "      ");
             System.err.printf("%s%3d%3d%n", indent, t.key, t.size);
             print(t.left, indent + "      ");
         }
@@ -71,13 +75,10 @@ public class Treap {
     }
 
     public static T merge(T t1, T t2) {
-        if (t1 == NULL)
-            return t2;
-        if (t2 == NULL)
-            return t1;
-        if (t1.p < t2.p)
-            return t1.change(t1.left, merge(t1.right, t2));
-        return t2.change(merge(t1, t2.left), t2.right);
+        if (t1 == NULL) return t2;
+        if (t2 == NULL) return t1;
+        if (t1.p < t2.p) return t1.push().change(t1.left, merge(t1.right, t2));
+        return t2.push().change(merge(t1, t2.left), t2.right);
     }
 
 }
