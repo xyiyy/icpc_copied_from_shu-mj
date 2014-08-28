@@ -29,7 +29,9 @@ public class Treap {
             return this;
         }
         public T push() {
+            if (this != NULL) {
 
+            }
             return this;
         }
     }
