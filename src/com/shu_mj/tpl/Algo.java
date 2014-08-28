@@ -448,16 +448,16 @@ public class Algo {
     public static int[] unique(int[] is) {
         return unique(is, 0, is.length);
     }
-    public static long[] unique(long[] ls) { 
-        return unique(ls, 0, ls.length); 
+    public static long[] unique(long[] ls) {
+        return unique(ls, 0, ls.length);
     }
-    public static char[] unique(char[] cs) { 
+    public static char[] unique(char[] cs) {
         return unique(cs, 0, cs.length);
     }
     public static <T extends Comparable<T>> T[] unique(T[] ts) {
-        return unique(ts, 0, ts.length); 
+        return unique(ts, 0, ts.length);
     }
-    
+
     public static int[] unique(int[] is, int b, int e) {
         if (b == e)
             return new int[0];
@@ -890,6 +890,13 @@ public class Algo {
         return rs;
     }
 
+    public static boolean equalsOfRange(boolean[] is, int ib, int ie, boolean[] js, int jb, int je) {
+        if (ie - ib != je - jb) return false;
+        for (int i = ib, j= jb; i < ie; i++, j++) {
+            if (is[i] != js[j]) return false;
+        }
+        return true;
+    }
     public static boolean equalsOfRange(char[] is, int ib, int ie, char[] js, int jb, int je) {
         if (ie - ib != je - jb) return false;
         for (int i = ib, j= jb; i < ie; i++, j++) {
@@ -897,6 +904,61 @@ public class Algo {
         }
         return true;
     }
+    public static boolean equalsOfRange(double[] is, int ib, int ie, double[] js, int jb, int je) {
+        if (ie - ib != je - jb) return false;
+        for (int i = ib, j= jb; i < ie; i++, j++) {
+            if (is[i] != js[j]) return false;
+        }
+        return true;
+    }
+    public static boolean equalsOfRange(int[] is, int ib, int ie, int[] js, int jb, int je) {
+        if (ie - ib != je - jb) return false;
+        for (int i = ib, j= jb; i < ie; i++, j++) {
+            if (is[i] != js[j]) return false;
+        }
+        return true;
+    }
+    public static boolean equalsOfRange(long[] is, int ib, int ie, long[] js, int jb, int je) {
+        if (ie - ib != je - jb) return false;
+        for (int i = ib, j= jb; i < ie; i++, j++) {
+            if (is[i] != js[j]) return false;
+        }
+        return true;
+    }
+    public static boolean allTheSame(boolean[] is) {
+        for (int i = 1; i < is.length; i++) {
+            if (is[i] != is[0]) return false;
+        }
+        return true;
+    }
+    public static boolean allTheSame(char[] is) {
+        for (int i = 1; i < is.length; i++) {
+            if (is[i] != is[0]) return false;
+        }
+        return true;
+    }
+    public static boolean allTheSame(double[] is) {
+        for (int i = 1; i < is.length; i++) {
+            if (is[i] != is[0]) return false;
+        }
+        return true;
+    }
+    public static boolean allTheSame(int[] is) {
+        for (int i = 1; i < is.length; i++) {
+            if (is[i] != is[0]) return false;
+        }
+        return true;
+    }
+    public static boolean allTheSame(long[] is) {
+        for (int i = 1; i < is.length; i++) {
+            if (is[i] != is[0]) return false;
+        }
+        return true;
+    }
 
-
+    public static int days(int y, int m, int d) {
+        m = (m + 9) % 12;
+        y = y - m / 10;
+        return 365 * y + y / 4 - y / 100 + y / 400 + (m * 306 + 5) / 10 + (d - 1);
+    }
 }
