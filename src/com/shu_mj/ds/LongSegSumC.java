@@ -3,10 +3,10 @@ package com.shu_mj.ds;
 /**
  * Created by Jun on 6/7/2014.
  */
-public class LongSegLite {
+public class LongSegSumC {
     LongBIT dif, pre;
 
-    public LongSegLite(int n) {
+    public LongSegSumC(int n) {
         dif = new LongBIT(n);
         pre = new LongBIT(n);
     }
