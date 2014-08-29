@@ -367,7 +367,7 @@ public class Num {
     }
 
     //把 n 的约数的莫比乌斯值用 map 形式的返回。O(sqrt n)
-    public static Map<Long, Integer> moebius(int n) {
+    public static Map<Long, Integer> moebius(long n) {
         Map<Long, Integer> res = new HashMap<Long, Integer>();
         List<Long> primes = primeFactors(n);
         int m = primes.size();
@@ -441,18 +441,7 @@ public class Num {
         else map.put(k, map.get(k) + 1);
     }
 
-    // n! = a * p^k, return a % p
-    // O(p log n)
-    public static long modFact(long n, long p) {
-        long res = 1;
-        while (n > 0) {
-            for (long i = 1, m = n % p; i <= m; i++) res = (res * i) % p;
-            if ((n /= p) % 2 > 0) res = p - res;
-        }
-        return res;
-    }
-
-    // Ax = B (mod M)
+   // Ax = B (mod M)
     public static BigInteger[] congruence(BigInteger[] A, BigInteger[] B, BigInteger[] M) {
         BigInteger x = BigInteger.ZERO, m = BigInteger.ONE;
         for (int i = 0; i < A.length; i++) {
@@ -509,10 +498,35 @@ public class Num {
         return -1;
     }
 
+    public static Map<Integer, int[]> fact;
+    public static int e;
+    public static int[] modFact(int n, int p) {
+        return new int[] { modFactRec(n, p), e };
+    }
+    public static int modFactRec(int n, int p) {
+        e = 0;
+        if (n == 0) return 1;
+        int res = modFactRec(n / p, p);
+        e += n / p;
+        if (n / p % 2 != 0) return res * (p - fact(n % p, p)) % p;
+        return res * fact(n % p, p) % p;
+    }
+    public static int fact(int n, int p) {
+        if (fact == null) fact = new HashMap<Integer, int[]>();
+        if (!fact.containsKey(p)) {
+            int[] f = new int[p];
+            f[0] = 1;
+            for (int i = 1; i < p; i++) f[i] = (int) ((long) f[i - 1] * i % p);
+            fact.put(p, f);
+        }
+        return fact.get(p)[n];
+    }
+
     // C(n, k) % p
-    long modComb(long n, long k, long p) {
+    public static int modComb(int n, int k, int p) {
         if (n < 0 || k < 0 || n < k) return 0;
-        long a1 = modFact(n, p), a2 = modFact(k, p), a3 = modFact(n - k, p);
-        return a1 * inv(a2 * a3 % p, p) % p;
+        int[] a1 = modFact(n, p), a2 = modFact(k, p), a3 = modFact(n - k, p);
+        if (a1[1] > a2[1] + a3[1]) return 0;
+        return a1[0] * (int) inv(a2[0] * a3[0] % p, p) % p;
     }
 }
