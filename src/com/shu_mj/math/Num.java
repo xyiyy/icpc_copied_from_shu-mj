@@ -269,9 +269,13 @@ public class Num {
         return BigInteger.valueOf(a).multiply(BigInteger.valueOf(b)).mod(BigInteger.valueOf(mod)).longValue();
     }
 
-    public static long inv(long a, long mod) {
+    public static long invS(long a, long mod) {
         if (a == 1) return 1;
-        return inv(mod % a, mod) * (mod - mod / a) % mod;
+        return invS(mod % a, mod) * (mod - mod / a) % mod;
+    }
+
+    public static long inv(long a, long mod) {
+        return BigInteger.valueOf(a).modInverse(BigInteger.valueOf(mod)).longValue();
     }
 
     public static long gcd(long a, long b) {
@@ -435,5 +439,80 @@ public class Num {
     public static <K> void inc(Map<K, Integer> map, K k) {
         if (!map.containsKey(k)) map.put(k, 1);
         else map.put(k, map.get(k) + 1);
+    }
+
+    // n! = a * p^k, return a % p
+    // O(p log n)
+    public static long modFact(long n, long p) {
+        long res = 1;
+        while (n > 0) {
+            for (long i = 1, m = n % p; i <= m; i++) res = (res * i) % p;
+            if ((n /= p) % 2 > 0) res = p - res;
+        }
+        return res;
+    }
+
+    // Ax = B (mod M)
+    public static BigInteger[] congruence(BigInteger[] A, BigInteger[] B, BigInteger[] M) {
+        BigInteger x = BigInteger.ZERO, m = BigInteger.ONE;
+        for (int i = 0; i < A.length; i++) {
+            BigInteger a = A[i].multiply(m), b = B[i].subtract(A[i].multiply(x)), d = a.gcd(M[i]);
+            if (!b.mod(d).equals(BigInteger.ZERO)) return null;
+            x = x.add(m.multiply(b.divide(d).multiply(a.divide(d).modInverse(M[i].divide(d))).mod(M[i].divide(d))));
+            m = m.multiply(M[i].divide(d));
+        }
+        return new BigInteger[] { x.mod(m), m };
+    }
+
+    public static long[] congruence(long[] A, long[] B, long[] M) {
+        long x = 0, m = 1;
+        for (int i = 0; i < A.length; i++) {
+            long a = A[i] * m, b = B[i] - A[i] * x, d = gcd(a, M[i]);
+            if (b % d != 0) return null;
+            x += m * (b / d * inv(a / d, M[i] / d) % (M[i] / d));
+            m *= M[i] / d;
+        }
+        return new long[] { x % m, m };
+    }
+
+    public static long[] congruence(long A, long B, long M) {
+        long x = 0, m = 1;
+        long a = A * m, b = B - A * x, d = gcd(a, M);
+        if (b % d != 0) return null;
+        x += m * (b / d * inv(a / d, M / d) % (M / d));
+        m *= M / d;
+        return new long[] { x % m, m };
+    }
+
+    // a^x = b (mod m) return min(x)
+    // return -1 if no solution
+    public static long modLog(long a, long b, long m) {
+        if (b % gcd(a, m) != 0) return -1;
+        if (m == 0) return 0;
+        long n = (long) Math.sqrt(m) + 1;
+        Map<Long, Long> map = new HashMap<Long, Long>();
+        long an = 1;
+        for (long j = 0; j < n; j++) {
+            if (!map.containsKey(an)) map.put(an, j);
+            an = an * a % m;
+        }
+        long ain = 1, res = Long.MAX_VALUE;
+        for (long i = 0; i < n; i++) {
+            long[] is = congruence(ain, b, m);
+            for (long aj = is[0]; aj < m; aj += is[1]) if (map.containsKey(aj)) {
+                long j = map.get(aj);
+                res = Math.min(res, i * n + j);
+            }
+            if (res < Long.MAX_VALUE) return res;
+            ain = ain * an % m;
+        }
+        return -1;
+    }
+
+    // C(n, k) % p
+    long modComb(long n, long k, long p) {
+        if (n < 0 || k < 0 || n < k) return 0;
+        long a1 = modFact(n, p), a2 = modFact(k, p), a3 = modFact(n - k, p);
+        return a1 * inv(a2 * a3 % p, p) % p;
     }
 }
