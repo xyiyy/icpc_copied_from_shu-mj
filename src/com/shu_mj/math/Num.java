@@ -344,15 +344,16 @@ public class Num {
     }
 
     public static List<Long> primeFactors(long n) {
-        List<Long> primes = new ArrayList<Long>();
-        for (long i = 2; i * i <= n; i++) {
+        List<Long> ps = new ArrayList<Long>();
+        for (int i : primes) {
+            if ((long) i * i > n) break;
             if (n % i == 0) {
-                primes.add(i);
+                ps.add((long) i);
                 while (n % i == 0) n /= i;
             }
         }
-        if (n != 1) primes.add(n);
-        return primes;
+        if (n != 1) ps.add(n);
+        return ps;
     }
 
     public static List<Long> factors(long n) {
