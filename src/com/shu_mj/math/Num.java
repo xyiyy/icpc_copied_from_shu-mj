@@ -368,7 +368,7 @@ public class Num {
 
     //把 n 的约数的莫比乌斯值用 map 形式的返回。O(sqrt n)
     public static Map<Long, Integer> moebius(long n) {
-        Map<Long, Integer> res = new HashMap<Long, Integer>();
+        Map<Long, Integer> res = new TreeMap<Long, Integer>();
         List<Long> primes = primeFactors(n);
         int m = primes.size();
         for (int i = 0; i < (1 << m); i++) {

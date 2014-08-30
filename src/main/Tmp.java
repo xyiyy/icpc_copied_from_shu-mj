@@ -22,12 +22,8 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < 50; i++) {
-            list.add(i);
-        }
-        Collections.shuffle(list);
-        for (int i : list) out.print(i + " ");
+        Algo.debug(Math.round(2.1), Math.round(2.5), Math.round(2.9));
+        Algo.debug(Math.round(-2.1), Math.round(-2.5), Math.round(-2.9));
     }
 
     public static void main(String[] args) {
