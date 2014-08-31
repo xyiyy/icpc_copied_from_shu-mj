@@ -1,6 +1,2 @@
-33 src/main/CatsOnTheLineDiv1.tctask
-4
+19 src/main/TaskB.task
 0
-1
-4
-5
