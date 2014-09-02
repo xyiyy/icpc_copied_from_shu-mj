@@ -1,5 +1,7 @@
 package main;
 
+
+
 import com.shu_mj.ds.MatSum;
 import com.shu_mj.tpl.Scanner;
 import java.io.PrintWriter;
@@ -71,7 +73,7 @@ public class TaskD {
 
     class Mat {
         final int N;
-        final int B = 450;
+        final int B = 100;
         final int BS;
         int[] X;
         int[] Y;

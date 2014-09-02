@@ -259,14 +259,11 @@ public class Matrix {
             }
             if (!a[pi][pj]) // 当前列已经全零
                 continue;
-            boolean inv = true;
-            for (int j = 0; j <= m; j++) // 化主元为 1，可以优化
-                a[pi][j] ^= inv;
             for (int i = 0; i < n; i++)
                 if (i != pi) {
                     boolean d = a[i][pj];
                     for (int j = 0; j <= m; j++) // 化当前列为 0，可以优化
-                        a[i][j] ^= d ^ a[pi][j];
+                        a[i][j] ^= d & a[pi][j];
                 }
             id[pi++] = pj;
         }

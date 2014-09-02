@@ -22,8 +22,25 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        Algo.debug(Math.round(2.1), Math.round(2.5), Math.round(2.9));
-        Algo.debug(Math.round(-2.1), Math.round(-2.5), Math.round(-2.9));
+        Num.primeTable(100, new ArrayList<Integer>());
+        for (int a = 1; a <= 100; a++) {
+            for (int b = 1; b <= 100; b++) {
+                for (int c = 1; c <= 100; c++) {
+                    long r1 = calc1(a, b, c);
+                    long r2 = clac2(a, b, c);
+                    if (r1 != r2) Algo.debug(a, b, c, r1, r2);
+                }
+            }
+        }
+    }
+
+    private long clac2(int a, int b, int c) {
+        if (b < Num.phi(c)) return calc1(a, b, c);
+        return Num.pow(a, b % Num.phi(c) + Num.phi(c), c);
+    }
+
+    private long calc1(int a, int b, int c) {
+        return Num.pow(a, b, c);
     }
 
     public static void main(String[] args) {
