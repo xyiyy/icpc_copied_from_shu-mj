@@ -141,7 +141,7 @@ public class Matrix {
         return c;
     }
 
-    public static final double EPS = 1e-6;
+    public static final double EPS = 1e-8;
 
     public static double[][] solutionSpace(double[][] A, double[] b) {
         int n = A.length, m = A[0].length;

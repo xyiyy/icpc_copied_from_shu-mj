@@ -69,6 +69,10 @@ public class Num {
         return millerRabin(n, 20);
     }
 
+    public static boolean isPrime(long n) {
+        return isPrime(BigInteger.valueOf(n));
+    }
+
     // 素因数分解する。小さい数は用意した素数で試し割り、大きければポラード・ロー
     public static void factorize(BigInteger n, Map<BigInteger, Integer> factors) {
         if (isPrime(n)) {
@@ -157,6 +161,16 @@ public class Num {
 
     public static long[][] combinationTable(int n) {
         long[][] res = new long[n + 1][n + 1];
+        for (int i = 0; i <= n; i++) {
+            res[i][0] = 1;
+            for (int j = 1; j <= i; j++)
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+        }
+        return res;
+    }
+
+    public static double[][] doubleCombinationTable(int n) {
+        double[][] res = new double[n + 1][n + 1];
         for (int i = 0; i <= n; i++) {
             res[i][0] = 1;
             for (int j = 1; j <= i; j++)
@@ -532,4 +546,5 @@ public class Num {
         if (a1[1] > a2[1] + a3[1]) return 0;
         return a1[0] * (int) inv(a2[0] * a3[0] % p, p) % p;
     }
+
 }
