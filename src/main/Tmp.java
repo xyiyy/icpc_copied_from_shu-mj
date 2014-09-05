@@ -22,15 +22,30 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        Num.primeTable(100, new ArrayList<Integer>());
-        for (int a = 1; a <= 100; a++) {
-            for (int b = 1; b <= 100; b++) {
-                for (int c = 1; c <= 100; c++) {
-                    long r1 = calc1(a, b, c);
-                    long r2 = clac2(a, b, c);
-                    if (r1 != r2) Algo.debug(a, b, c, r1, r2);
-                }
+        int n = 45;
+        List<E> list = new ArrayList<E>();
+        for (int i = 0, k = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                list.add(new E(i, j));
             }
+        }
+        Collections.shuffle(list);
+        for (E e : list) {
+            out.print(e.u + ",");
+        }
+        out.println();
+        for (E e : list) {
+            out.print(e.v + ",");
+        }
+        out.println();
+    }
+    class E {
+        int u;
+        int v;
+
+        E(int u, int v) {
+            this.u = u;
+            this.v = v;
         }
     }
 
