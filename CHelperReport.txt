@@ -1,2 +1,2 @@
-42 src/main/CandyCupRunningCompetition.tctask
+19 src/main/TaskD.task
 0
