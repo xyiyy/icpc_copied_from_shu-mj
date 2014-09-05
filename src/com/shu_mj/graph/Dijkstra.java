@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
  * Created by Jun on 6/7/2014.
  */
 
-public class Dij {
+public class Dijkstra {
     public static void dijkstra(V s) {
         PriorityQueue<E> que = new PriorityQueue<E>();
         s.min = 0;
