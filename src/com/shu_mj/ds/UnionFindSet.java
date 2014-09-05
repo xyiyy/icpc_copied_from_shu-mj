@@ -20,7 +20,7 @@ public class UnionFindSet {
         pre[find(x)] = find(y);
     }
 
-    public boolean same(int x, int y) {
+    public boolean isSame(int x, int y) {
         return find(x) == find(y);
     }
 }
