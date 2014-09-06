@@ -723,19 +723,19 @@ public class Algo {
         for (double[] ds : dss) Arrays.fill(ds, d);
     }
     public static void fill(boolean[][][] bsss, boolean b) {
-        for (boolean[][] bss : bsss) Arrays.fill(bss, b);
+        for (boolean[][] bss : bsss) Algo.fill(bss, b);
     }
     public static void fill(char[][][] csss, char c) {
-        for (char[][] css : csss) Arrays.fill(css, c);
+        for (char[][] css : csss) Algo.fill(css, c);
     }
     public static void fill(int[][][] isss, int v) {
-        for (int[][] iss : isss) Arrays.fill(iss, v);
+        for (int[][] iss : isss) Algo.fill(iss, v);
     }
     public static void fill(long[][][] lsss, long v) {
-        for (long[][] lss : lsss) Arrays.fill(lss, v);
+        for (long[][] lss : lsss) Algo.fill(lss, v);
     }
     public static void fill(double[][][] dsss, double d) {
-        for (double[][] dss : dsss) Arrays.fill(dss, d);
+        for (double[][] dss : dsss) Algo.fill(dss, d);
     }
 
     public static void sort(char[] cs) {
