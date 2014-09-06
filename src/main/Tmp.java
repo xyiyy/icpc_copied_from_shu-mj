@@ -1,5 +1,6 @@
 package main;
 
+import com.shu_mj.datetime.DateTime;
 import com.shu_mj.ds.BIT;
 import com.shu_mj.ds.Hash;
 import com.shu_mj.geo.P;
@@ -22,40 +23,14 @@ public class Tmp {
     Scanner in = new Scanner(System.in);
     PrintStream out = System.out;
     void run() {
-        int n = 45;
-        List<E> list = new ArrayList<E>();
-        for (int i = 0, k = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                list.add(new E(i, j));
-            }
-        }
-        Collections.shuffle(list);
-        for (E e : list) {
-            out.print(e.u + ",");
-        }
-        out.println();
-        for (E e : list) {
-            out.print(e.v + ",");
-        }
-        out.println();
-    }
-    class E {
-        int u;
-        int v;
-
-        E(int u, int v) {
-            this.u = u;
-            this.v = v;
-        }
-    }
-
-    private long clac2(int a, int b, int c) {
-        if (b < Num.phi(c)) return calc1(a, b, c);
-        return Num.pow(a, b % Num.phi(c) + Num.phi(c), c);
-    }
-
-    private long calc1(int a, int b, int c) {
-        return Num.pow(a, b, c);
+        Algo.debug(DateTime.days(2000, 1, 1));
+        Algo.debug(DateTime.days(2000, 1, 2));
+        Algo.debug(DateTime.days(1999, 1, 1));
+        Algo.debug(DateTime.days(1900, 1, 1));
+        Algo.debug(DateTime.days(1900, 1, 2));
+        Algo.debug(DateTime.days(1000, 1, 2));
+        Algo.debug(DateTime.days(1000, 1, 2));
+        Algo.debug(DateTime.days(1, 1, 1));
     }
 
     public static void main(String[] args) {
