@@ -15,18 +15,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-        int n = 15;
-        int[] is = new int[n];
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
-                int d = 1;
-                for (int k = i; k <= j; k++) {
-                    is[k] += d;
-                    d *= -1;
-                }
-            }
-        }
-        Algo.debug(is);
+
     }
 
     public static void main(String[] args) {
