@@ -1,2 +1,2 @@
-19 src/main/TaskK.task
+36 src/main/A - No to Palindromes!.task
 0
