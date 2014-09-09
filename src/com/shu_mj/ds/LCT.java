@@ -21,21 +21,25 @@ public class LCT {
             this.left = left;
             this.right = right;
         }
+
         T(int id) {
             this(id, false, Math.random(), NULL, NULL, NULL);
         }
+
         T change(T left, T right) {
             this.left = left; left.pre = this;
             this.right = right; right.pre = this;
             return this;
         }
+
         T setRev() {
             if (this == NULL) return NULL;
             rev ^= true;
             T t = left; left = right; right = t;
             return this;
         }
-        T pushDown() {
+
+        T push() {
             if (rev) {
                 left.setRev();
                 right.setRev();
@@ -44,12 +48,14 @@ public class LCT {
             return this;
         }
     }
+
     T merge(T t1, T t2) {
         if (t1 == NULL) return t2;
         if (t2 == NULL) return t1;
-        if (t1.p < t2.p) return t1.pushDown().change(t1.left, merge(t1.right, t2));
-        return t2.pushDown().change(merge(t1, t2.left), t2.right);
+        if (t1.p < t2.p) return t1.push().change(t1.left, merge(t1.right, t2));
+        return t2.push().change(merge(t1, t2.left), t2.right);
     }
+
     T[] split(T t) {
         pushDownAllMark(t);
         T[] res = new T[2];
@@ -81,12 +87,14 @@ public class LCT {
         last.pre = NULL;
         return last;
     }
+
     T makeRoot(T t) {
         return access(t).setRev();
     }
+
     T getRoot(T t) {
         t = access(t);
-        while (t.pushDown().left != NULL) t = t.left;
+        while (t.push().left != NULL) t = t.left;
         return t;
     }
     void link(T x, T y) {
@@ -102,8 +110,9 @@ public class LCT {
 
     private void pushDownAllMark(T t) {
         if (t.pre.left == t || t.pre.right == t) pushDownAllMark(t.pre);
-        t.pushDown();
+        t.push();
     }
 
     T NULL = new T(0);
+
 }
