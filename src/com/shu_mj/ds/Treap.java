@@ -5,12 +5,12 @@ package com.shu_mj.ds;
  */
 public class Treap {
 
-    public static class T {
-        public int key, size;
-        public double p;
-        public T left, right;
+    class T {
+        int key, size;
+        double p;
+        T left, right;
 
-        public T(int key, int size, double p, T left, T right) {
+        T(int key, int size, double p, T left, T right) {
             this.key = key;
             this.size = size;
             this.p = p;
@@ -18,17 +18,17 @@ public class Treap {
             this.right = right;
         }
 
-        public T(int key) {
+        T(int key) {
             this(key, 1, Math.random(), NULL, NULL);
         }
 
-        public T change(T left, T right) {
+        T change(T left, T right) {
             size = left.size + right.size + 1;
             this.left = left;
             this.right = right;
             return this;
         }
-        public T push() {
+        T push() {
             if (this != NULL) {
 
             }
@@ -36,9 +36,9 @@ public class Treap {
         }
     }
 
-    public static final T NULL = new T(0, 0, 0, null, null);
+    final T NULL = new T(0, 0, 0, null, null);
 
-    public static T[] splitSize(T t, int size) {
+    T[] splitSize(T t, int size) {
         T[] res;
         if (size <= 0) {
             res = new T[] { NULL, t };
@@ -52,7 +52,7 @@ public class Treap {
         return res;
     }
 
-    public static T[] splitKey(T t, int key) {
+    T[] splitKey(T t, int key) {
         T[] res;
         if (t == NULL) {
             res = new T[] { NULL, NULL };
@@ -66,7 +66,7 @@ public class Treap {
         return res;
     }
 
-    public static void print(T t, String indent) {
+    void print(T t, String indent) {
         if (t != NULL) {
             print(t.push().right, indent + "      ");
             System.err.printf("%s%3d%3d%n", indent, t.key, t.size);
@@ -76,7 +76,7 @@ public class Treap {
             System.err.println("----------------------------------");
     }
 
-    public static T merge(T t1, T t2) {
+    T merge(T t1, T t2) {
         if (t1 == NULL) return t2;
         if (t2 == NULL) return t1;
         if (t1.p < t2.p) return t1.push().change(t1.left, merge(t1.right, t2));

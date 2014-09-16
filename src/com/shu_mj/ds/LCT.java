@@ -108,7 +108,7 @@ public class LCT {
         x.pre = NULL;
     }
 
-    private void pushDownAllMark(T t) {
+    void pushDownAllMark(T t) {
         if (t.pre.left == t || t.pre.right == t) pushDownAllMark(t.pre);
         t.push();
     }
