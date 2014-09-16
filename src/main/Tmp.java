@@ -1,5 +1,6 @@
 package main;
 
+import com.shu_mj.ds.Palindrome;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
 
