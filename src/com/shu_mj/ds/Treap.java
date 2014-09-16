@@ -36,7 +36,7 @@ public class Treap {
         }
     }
 
-    final T NULL = new T(0, 0, 0, null, null);
+    T NULL = new T(0, 0, 0, null, null);
 
     T[] splitSize(T t, int size) {
         T[] res;
