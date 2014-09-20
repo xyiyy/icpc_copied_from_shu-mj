@@ -7,18 +7,18 @@ import java.util.Arrays;
  */
 public abstract class Seg {
     public int N;
-    public long[] infos;
-    public long[] deltas;
-    public static final long DEFAULT_INFO = 1;
-    public static final long DEFAULT_DELTA = 1;
+    public long[] is;
+    public long[] ds;
+    public static final long I = 1;
+    public static final long D = 1;
 
     public Seg(int n) {
         N = Integer.highestOneBit(n) << 1;
-        infos = new long[N * 2];
-        deltas = new long[N * 2];
-        Arrays.fill(deltas, DEFAULT_DELTA);
+        is = new long[N * 2];
+        ds = new long[N * 2];
+        Arrays.fill(ds, D);
         for (int i = N; i < N * 2; i++) {
-            infos[i] = DEFAULT_INFO;
+            is[i] = I;
         }
         for (int i = N - 1; i > 0; i--) {
             pushUp(i);
@@ -28,7 +28,7 @@ public abstract class Seg {
     public abstract long mergeInfo(long a, long b);
 
     public void pushUp(int o) {
-        infos[o] = mergeInfo(infos[o * 2], infos[o * 2 + 1]);
+        is[o] = mergeInfo(is[o * 2], is[o * 2 + 1]);
     }
 
     public abstract void push(int o, int l, int r, long d);
@@ -40,7 +40,7 @@ public abstract class Seg {
     long query(int o, int l, int r, int s, int t) {
         if (s <= l && r <= t) {
             // 如果 [l, r) 和 [s, t) 不同，需要修改
-            return infos[o];
+            return is[o];
         } else {
             pushDown(o, l, r);
             int m = (l + r) / 2;
@@ -68,11 +68,11 @@ public abstract class Seg {
     }
 
     public void pushDown(int o, int l, int r) {
-        if (deltas[o] != DEFAULT_DELTA) {
+        if (ds[o] != D) {
             int m = (l + r) / 2;
-            push(o * 2, l, m, deltas[o]);
-            push(o * 2 + 1, m, r, deltas[o]);
-            deltas[o] = DEFAULT_DELTA;
+            push(o * 2, l, m, ds[o]);
+            push(o * 2 + 1, m, r, ds[o]);
+            ds[o] = D;
         }
     }
 

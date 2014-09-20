@@ -39,7 +39,7 @@ public class LongSegMin {
         mul[o] = m * mul[o];
         add[o] = m * add[o] + a;
         if (t <= L || R <= s || s <= L && R <= t) {
-            // maintain infos[o] for m, a
+            // maintain is[o] for m, a
             ls[o] = m * ls[o] + a; // need change
         } else {
             int M = (L + R) / 2;
