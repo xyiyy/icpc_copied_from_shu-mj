@@ -2,6 +2,8 @@ package main;
 
 
 
+
+
 import com.shu_mj.ds.UnionFindSet;
 import com.shu_mj.graph.SCC;
 import com.shu_mj.tpl.Scanner;
@@ -30,31 +32,20 @@ public class TaskB {
         }
         SCC.V[] vs = new SCC.V[n * 2];
         for (int i = 0; i < vs.length; i++) vs[i] = new SCC.V();
-        UnionFindSet uf = new UnionFindSet(n * 2);
         for (int i = 0; i < n; i++) {
             if (id.containsKey(a - is[i])) {
                 int j = id.get(a - is[i]);
                 vs[i].add(vs[j]);
-                uf.union(i, j);
+                vs[j + n].add(vs[i + n]);
             } else {
                 vs[i].add(vs[i + n]);
-                uf.union(i, i + n);
             }
             if (id.containsKey(b - is[i])) {
                 int j = id.get(b - is[i]);
                 vs[i + n].add(vs[j + n]);
-                uf.union(i + n, j + n);
+                vs[j].add(vs[i]);
             } else {
                 vs[i + n].add(vs[i]);
-                uf.union(i + n, i);
-            }
-            if (is[i] * 2 != a && is[i] * 2 != b && id.containsKey(a - is[i]) && id.containsKey(b - is[i])) {
-                int x = id.get(a - is[i]);
-                int y = id.get(b - is[i]);
-                vs[i].add(vs[y]);
-                vs[i + n].add(vs[x + n]);
-                uf.union(i, y);
-                uf.union(i + n, x + n);
             }
         }
         SCC.scc(vs);
@@ -65,16 +56,13 @@ public class TaskB {
             }
         }
         out.println("YES");
-        int[] ans = new int[n];
-        Arrays.fill(ans, -1);
         for (int i = 0; i < n; i++) {
-            if (vs[i].comp > vs[i + n].comp && uf.isSame(i, i + n)) {
-                ans[i] = 0;
+            if (vs[i].comp > vs[i + n].comp) {
+                out.print("0 ");
             } else {
-                ans[i] = 1;
+                out.print("1 ");
             }
         }
-
         out.println();
     }
 }
