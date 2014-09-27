@@ -23,4 +23,8 @@ public class UnionFindSet {
     public boolean isSame(int x, int y) {
         return find(x) == find(y);
     }
+
+    public boolean isRoot(int x) {
+        return pre[x] == x;
+    }
 }

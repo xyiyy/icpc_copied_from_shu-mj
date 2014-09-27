@@ -4,7 +4,7 @@ package com.shu_mj.ds;
  * Created by Jun on 6/21/2014.
  */
 public class Hash {
-    public static final long BASE = (long) (1e9 + 7);
+    public final long BASE = (long) (1e9 + 7);
     public long[] ps;
     public Hash(int n) {
         ps = new long[n + 1];
@@ -22,20 +22,20 @@ public class Hash {
         for (int i = 0; i < n; i++) hs[i + 1] = hs[i] * BASE + is[i];
         return hs;
     }
-    public static long getHash(char[] cs) {
+    public long getHash(char[] cs) {
         return getHash(cs, 0, cs.length);
     }
-    public static long getHash(char[] cs, int b, int e) {
+    public long getHash(char[] cs, int b, int e) {
         long h = 0;
         for (int i = b; i < e; i++) {
             h = h * BASE + cs[i];
         }
         return h;
     }
-    public static long getHash(int[] is) {
+    public long getHash(int[] is) {
         return getHash(is, 0, is.length);
     }
-    public static long getHash(int[] is, int b, int e) {
+    public long getHash(int[] is, int b, int e) {
         long h = 0;
         for (int i = b; i < e; i++) {
             h = h * BASE + is[i];

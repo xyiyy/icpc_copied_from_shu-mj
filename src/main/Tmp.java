@@ -6,6 +6,7 @@ import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,7 +19,9 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-
+        Algo.debug(Long.toHexString(0xabcdefabcdefL & 0xffffffff));
+        Algo.debug(Long.toHexString(0xabcdefabcdefL & 0xffffffffL));
+        Algo.debug(Long.toHexString(0xffffffff));
     }
 
     public static void main(String[] args) {
