@@ -6,11 +6,11 @@ import java.util.Arrays;
  * Created by Jun on 6/7/2014.
  */
 public class SuffixArray {
-    int n;
-    char[] cs;
-    int[] si, is;// ソート後と元のインデックスの対応
+    public int n;
+    public char[] cs;
+    public int[] si, is;// ソート後と元のインデックスの対応
 
-    int[] indexSort(int[] is) {
+    public int[] indexSort(int[] is) {
         int[] c = new int[128];
         for (int i : is) c[i]++;
         for (int i = 1; i < 128; i++) c[i] += c[i - 1];
@@ -62,7 +62,7 @@ public class SuffixArray {
         }
     }
 
-    RMQ rmq;
+    public RMQ rmq;
 
     public void buildRMQ() {
         rmq = new RMQ(hs);// 値を返す版

@@ -1,0 +1,58 @@
+package com.shu_mj.ds;
+
+import java.util.*;
+
+/**
+ * Created by Jun on 10/3/2014.
+ */
+public class AhoCorasick {
+    int m;
+    Node root;
+
+    AhoCorasick(char[][] ps) {
+        m = ps.length;
+        root = new Node();
+        for (int i = 0; i < m; i++) {
+            Node t = root;
+            for (char c : ps[i]) {
+                if (!t.cs.containsKey(c)) t.cs.put(c, new Node());
+                t = t.cs.get(c);
+            }
+            t.accept.add(i);
+        }
+        Queue<Node> que = new LinkedList<Node>();
+        que.offer(root);
+        while (!que.isEmpty()) {
+            Node t = que.poll();
+            for (Map.Entry<Character, Node> e : t.cs.entrySet()) {
+                char c = e.getKey();
+                Node u = e.getValue();
+                que.offer(u);
+                Node r = t.fail;
+                while (r != null && !r.cs.containsKey(c)) r = r.fail;
+                if (r == null) u.fail = root;
+                else u.fail = r.cs.get(c);
+                u.accept.addAll(u.fail.accept);
+            }
+        }
+    }
+
+    int[] searchFrom(char[] t) {
+        int n = t.length;
+        int[] count = new int[m];
+        Node u = root;
+        for (int i = 0; i < n; i++) {
+            while (u != null && !u.cs.containsKey(t[i])) u = u.fail;
+            if (u == null) u = root;
+            else u = u.cs.get(t[i]);
+            for (int j : u.accept) count[j]++;
+        }
+        return count;
+    }
+
+    class Node {
+        Map<Character, Node> cs = new TreeMap<Character, Node>();
+        List<Integer> accept = new ArrayList<Integer>();
+        Node fail;
+    }
+}
