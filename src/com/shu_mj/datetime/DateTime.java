@@ -1,5 +1,7 @@
 package com.shu_mj.datetime;
 
+import java.util.GregorianCalendar;
+
 /**
  * Created by Jun on 9/6/2014.
  */
@@ -25,6 +27,6 @@ public class DateTime {
     }
 
     public static boolean isLeapYear(int year) {
-        return (year & 3) == 0 || year % 100 != 0 || year % 400 == 0;
+        return new GregorianCalendar().isLeapYear(year);
     }
 }
