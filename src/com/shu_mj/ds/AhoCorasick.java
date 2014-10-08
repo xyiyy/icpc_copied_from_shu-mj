@@ -6,10 +6,10 @@ import java.util.*;
  * Created by Jun on 10/3/2014.
  */
 public class AhoCorasick {
-    int m;
-    Node root;
+    public int m;
+    public Node root;
 
-    AhoCorasick(char[][] ps) {
+    public AhoCorasick(char[][] ps) {
         m = ps.length;
         root = new Node();
         for (int i = 0; i < m; i++) {
@@ -37,7 +37,7 @@ public class AhoCorasick {
         }
     }
 
-    int[] searchFrom(char[] t) {
+    public int[] searchFrom(char[] t) {
         int n = t.length;
         int[] count = new int[m];
         Node u = root;
@@ -50,7 +50,7 @@ public class AhoCorasick {
         return count;
     }
 
-    class Node {
+    public static class Node {
         Map<Character, Node> cs = new TreeMap<Character, Node>();
         List<Integer> accept = new ArrayList<Integer>();
         Node fail;

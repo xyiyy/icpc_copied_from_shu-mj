@@ -1,2 +1,2 @@
-25 src/main/D - CGCDSSQ.task
+19 src/main/TaskA.task
 0
