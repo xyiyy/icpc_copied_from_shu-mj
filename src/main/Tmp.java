@@ -22,7 +22,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-
+        out.println("Test");
     }
 
     public static void main(String[] args) {
