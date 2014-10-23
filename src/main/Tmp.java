@@ -22,7 +22,6 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-
     }
 
     public static void main(String[] args) {
