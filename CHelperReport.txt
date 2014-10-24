@@ -1,2 +1,2 @@
-19 src/main/TaskB.task
+27 src/main/GreaterGame.tctask
 0
