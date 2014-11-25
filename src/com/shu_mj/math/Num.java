@@ -22,19 +22,10 @@ public class Num {
             k++;
             q = q.shiftRight(1);
         }
-        // n - 1 = 2^k * q (qは奇素数)
-        // nが素数であれば、下記のいずれかを満たす
-        // (i) a^q ≡ 1 (mod n)
-        // (ii) a^q, a^2q,..., a^(k-1)q のどれかがnを法として-1
-        //
-        // なので、逆に(i)(ii)いずれも満たしていない時は合成数と判定できる
-        //
         for (int i = 0; i < times; i++) {
-            BigInteger a = new BigInteger(n.bitLength(), rnd == null ? rnd = new Random() : rnd).abs().mod(n.subtract(BigInteger.ONE)).add(BigInteger.ONE); // 1,..,n-1からランダムに値を選ぶ
+            BigInteger a = new BigInteger(n.bitLength(), rnd == null ? rnd = new Random() : rnd).abs().mod(n.subtract(BigInteger.ONE)).add(BigInteger.ONE);
             BigInteger x = a.modPow(q, n);
-            // (i)をチェック
             if (x.equals(BigInteger.ONE)) continue;
-            // (ii)をチェック
             boolean found = false;
             for (int j = 0; j < k; j++) {
                 if (x.equals(n.subtract(BigInteger.ONE))) {
@@ -48,7 +39,6 @@ public class Num {
         }
         return true;
     }
-    // ポラード・ロー素因数分解法
     public static BigInteger pollardRho(BigInteger n, BigInteger c) {
         BigInteger x = BigInteger.valueOf(2);
         BigInteger y = BigInteger.valueOf(2);
@@ -63,17 +53,16 @@ public class Num {
         return d;
     }
 
-    // 素数かどうか判定。大きければミラーラビンを使う
     public static boolean isPrime(BigInteger n) {
         if (isPrime != null && n.compareTo(BigInteger.valueOf(isPrime.length)) < 0) return isPrime[n.intValue()];
-        return millerRabin(n, 20);
+        return millerRabin(n, 10);
     }
 
     public static boolean isPrime(long n) {
-        return isPrime(BigInteger.valueOf(n));
+        if (isPrime != null && n < isPrime.length) return isPrime[(int) n];
+        return millerRabin(BigInteger.valueOf(n), 10);
     }
 
-    // 素因数分解する。小さい数は用意した素数で試し割り、大きければポラード・ロー
     public static void factorize(BigInteger n, Map<BigInteger, Integer> factors) {
         if (isPrime(n)) {
             Num.inc(factors, n);

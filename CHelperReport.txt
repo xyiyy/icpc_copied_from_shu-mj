@@ -1,2 +1,2 @@
-21 src/main/dualpal.task
+20 src/main/sprime.task
 0
