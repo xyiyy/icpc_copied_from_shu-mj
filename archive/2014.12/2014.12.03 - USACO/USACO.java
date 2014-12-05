@@ -1,16 +1,15 @@
 package main;
 
-import com.shu_mj.ds.UnionFindSet;
-import com.shu_mj.tpl.*;
+import com.shu_mj.tpl.PII;
 import com.shu_mj.tpl.Scanner;
-
 import java.io.PrintWriter;
 import java.util.*;
+import com.shu_mj.tpl.Algo;
 
 public class USACO {
     /*
     LANG: JAVA
-    TASK: agrinet
+    TASK: humble
      */
     Scanner in;
     PrintWriter out;
@@ -22,42 +21,26 @@ public class USACO {
     }
 
     void run() {
-        int n = in.nextInt();
-        P[] ps = new P[n * (n - 1) / 2];
-        for (int i = 0, c = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                int d = in.nextInt();
-                if (i < j) {
-                    ps[c++] = new P(d, i, j);
-                }
+        int k = in.nextInt();
+        int n = in.nextInt() + 1;
+        int[] is = in.nextIntArray(k);
+        TreeSet<Integer> set = new TreeSet<Integer>();
+        set.add(1);
+        int[] ds = new int[n];
+        Arrays.fill(ds, -1);
+        int crt = 0;
+        while (n-- > 0) {
+            crt = set.higher(crt);
+            if (n == 0) {
+                out.println(crt);
+                return ;
             }
-        }
-        Arrays.sort(ps);
-        UnionFindSet uf = new UnionFindSet(n);
-        int sum = 0;
-        for (P p : ps) {
-            if (!uf.isSame(p.u, p.v)) {
-                uf.union(p.u, p.v);
-                sum += p.cost;
+            for (int i = 0; i < k; i++) {
+                int v = is[i];
+                if (ds[i] == crt / v) continue;
+                ds[i] = crt / v;
+                set.add(v * set.higher(crt / v));
             }
-        }
-        out.println(sum);
-    }
-
-    class P implements Comparable<P> {
-        int cost;
-        int u;
-        int v;
-
-        P(int cost, int u, int v) {
-            this.cost = cost;
-            this.u = u;
-            this.v = v;
-        }
-
-        @Override
-        public int compareTo(P o) {
-            return cost - o.cost;
         }
     }
 }
