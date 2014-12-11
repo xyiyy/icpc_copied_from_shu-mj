@@ -8,7 +8,7 @@ import com.shu_mj.tpl.Algo;
 public class USACO {
     /*
     LANG: JAVA
-    TASK: game1
+    TASK: rockers
      */
     Scanner in;
     PrintWriter out;
@@ -21,18 +21,31 @@ public class USACO {
 
     void run() {
         int n = in.nextInt();
+        int t = in.nextInt();
+        int m = in.nextInt();
         int[] is = in.nextIntArray(n);
-        int[][] dp = new int[n][n];
-        int[] ss = new int[n + 1];
-        for (int i = 1; i <= n; i++) ss[i] = ss[i - 1] + is[i - 1];
-        for (int len = 1; len <= n; len++) {
-            for (int b = 0; b < n; b++) {
-                int e = b + len - 1;
-                if (e >= n) break;
-                if (b == e) dp[b][e] = is[b];
-                else dp[b][e] = ss[e + 1] - ss[b] - Math.min(dp[b + 1][e], dp[b][e - 1]);
+        int ans = 0;
+        for (int i = 0; i < (1 << n); i++) {
+            if (fit(is, i, t, m)) {
+                ans = Math.max(ans, Integer.bitCount(i));
             }
         }
-        out.println(dp[0][n - 1] + " " + (ss[n] - dp[0][n - 1]));
+        out.println(ans);
+    }
+
+    private boolean fit(int[] is, int x, int t, int m) {
+        for (int i = 0, crt = 0, cnt = 0; i < is.length; i++) {
+            if ((x & (1 << i)) != 0) {
+                if (is[i] > t) return false;
+                if (crt + is[i] > t) {
+                    crt = is[i];
+                    cnt++;
+                    if (cnt >=   m) return false;
+                } else {
+                    crt += is[i];
+                }
+            }
+        }
+        return true;
     }
 }
