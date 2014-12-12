@@ -8,7 +8,7 @@ import com.shu_mj.tpl.Algo;
 public class USACO {
     /*
     LANG: JAVA
-    TASK: nuggets
+    TASK: job
      */
     Scanner in;
     PrintWriter out;
@@ -21,48 +21,32 @@ public class USACO {
 
     void run() {
         int n = in.nextInt();
-        int[] is = in.nextIntArray(n);
-        is = prune(is);
-        if (is[0] == 1) {
-            out.println(0);
-            return ;
+        int m1 = in.nextInt();
+        int m2 = in.nextInt();
+        int[] as = in.nextIntArray(m1);
+        int[] bs = in.nextIntArray(m2);
+        int[] ma = work(m1, as, n);
+        int[] mb = work(m2, bs, n);
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            res = Math.max(res, ma[i] + mb[n - i - 1]);
         }
-        int N = (int) (2e6);
-        boolean[] vis = new boolean[N];
-        vis[0] = true;
-        for (int i : is) {
-            for (int j = 0; j < N; j++) {
-                if (vis[j] && j + i < N) vis[j + i] = true;
+        out.println(ma[n - 1] + " " + res);
+    }
+
+    private int[] work(int m, int[] is, int n) {
+        int[] dy = new int[m];
+        int[] res = new int[n];
+        for (int i = 0; i < n; i++) {
+            int x = 0;
+            for (int j = 0; j < m; j++) {
+                if (dy[j] + is[j] < dy[x] + is[x]) {
+                    x = j;
+                }
             }
+            res[i] = dy[x] + is[x];
+            dy[x] += is[x];
         }
-        if (inf(vis)) out.println(0);
-        else {
-            int r = 0;
-            for (int i = 0; i < N; i++) if (!vis[i]) r = i;
-            out.println(r);
-        }
+        return res;
     }
-
-    private boolean inf(boolean[] vis) {
-        int M = 1000;
-        for (int i = vis.length - M; i < vis.length; i++) {
-            if (!vis[i]) return true;
-        }
-        return false;
-    }
-
-    private int[] prune(int[] is) {
-        Arrays.sort(is);
-        List<Integer> ls = new ArrayList<Integer>();
-        for (int i : is) {
-            if (!divAble(ls, i)) ls.add(i);
-        }
-        return Algo.unBox(ls.toArray(new Integer[0]));
-    }
-
-    private boolean divAble(List<Integer> ls, int i) {
-        for (int l : ls) if (i % l == 0) return true;
-        return false;
-    }
-
 }
