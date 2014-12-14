@@ -24,7 +24,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-
+        Algo.debug(Math.sin(90));
     }
 
     public static void main(String[] args) {
