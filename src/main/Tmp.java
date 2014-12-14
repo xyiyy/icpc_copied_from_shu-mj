@@ -24,7 +24,11 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-        Algo.debug(Math.sin(90));
+        String[] ss = { "a", "b", "a" };
+
+        Arrays.sort(ss);
+        Algo.sort(ss);
+        Algo.debug(Algo.unique(ss));
     }
 
     public static void main(String[] args) {

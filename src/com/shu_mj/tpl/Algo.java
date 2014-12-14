@@ -511,13 +511,13 @@ public class Algo {
     }
     public static <T extends Comparable<T>> T[] unique(T[] ts, int b, int e) {
         if (b == e)
-            return (T[]) new Object[0];
+            return Arrays.copyOfRange(ts, b, e);
         int cnt = 1;
         for (int i = b + 1; i < e; i++) {
             if (ts[i].compareTo(ts[i - 1]) != 0)
                 cnt++;
         }
-        T[] res = (T[]) new Object[cnt];
+        T[] res = Arrays.copyOf(ts, cnt);
         res[0] = ts[b];
         int id = 1;
         for (int i = b + 1; i < e; i++) {
