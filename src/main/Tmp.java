@@ -24,11 +24,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-        String[] ss = { "a", "b", "a" };
 
-        Arrays.sort(ss);
-        Algo.sort(ss);
-        Algo.debug(Algo.unique(ss));
     }
 
     public static void main(String[] args) {
