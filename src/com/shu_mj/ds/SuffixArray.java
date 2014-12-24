@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class SuffixArray {
     public int n;
     public char[] cs;
-    public int[] si, is;// ソート後と元のインデックスの対応
+    public int[] si, is;// si:= suffix array(si[0] = end); is[si[i]] = i;
 
     public int[] indexSort(int[] is) {
         int[] c = new int[128];
@@ -24,7 +24,7 @@ public class SuffixArray {
         n = t.length;
         cs = new char[n + 1];
         System.arraycopy(t, 0, cs, 0, n);
-        cs[n] = 0;// 番兵(他の全ての値より小さくすること)
+        cs[n] = 0;// guard, minimum value and not allowed to use
         is = new int[n + 1];
         for (int i = 0; i <= n; i++) is[i] = cs[i];
         si = indexSort(is);
@@ -51,7 +51,7 @@ public class SuffixArray {
         }
     }
 
-    public int[] hs;// hs[i]:=ソート後のsuffix のi とi+1 のLCP
+    public int[] hs;// hs[i]:= suffix i & i+1 's LCP
 
     public void buildHs() {
         hs = new int[n + 1];
@@ -65,10 +65,10 @@ public class SuffixArray {
     public RMQ rmq;
 
     public void buildRMQ() {
-        rmq = new RMQ(hs);// 値を返す版
+        rmq = new RMQ(hs);
     }
 
-    // 位置i,j から始まる部分列のLCP を求める
+    // begin from pos i,j, LCP means that Longest Common Prefix
     public int getLCP(int i, int j) {
         if (i == j) return n - i;
         return rmq.vs[rmq.query(Math.min(is[i], is[j]), Math.max(is[i], is[j]))];
