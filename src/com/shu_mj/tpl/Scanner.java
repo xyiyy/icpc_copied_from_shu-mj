@@ -125,4 +125,36 @@ public class Scanner {
         }
         return mat;
     }
+
+    public void nextIntArray(int n, int[] as, int[] bs) {
+        for (int i = 0; i < n; i++) {
+            as[i] = nextInt();
+            bs[i] = nextInt();
+        }
+    }
+
+    public void nextIntArray(int n, int[] as, int[] bs, int[] cs) {
+        for (int i = 0; i < n; i++) {
+            as[i] = nextInt();
+            bs[i] = nextInt();
+            cs[i] = nextInt();
+        }
+    }
+
+    public void nextIntArray(int n, int[] as, int[] bs, int[] cs, int[] ds) {
+        for (int i = 0; i < n; i++) {
+            as[i] = nextInt();
+            bs[i] = nextInt();
+            cs[i] = nextInt();
+            ds[i] = nextInt();
+        }
+    }
+
+    public char[][] nextCharMap(int n) {
+        char[][] maps = new char[n][];
+        for (int i = 0; i < n; i++) {
+            maps[i] = next().toCharArray();
+        }
+        return maps;
+    }
 }
