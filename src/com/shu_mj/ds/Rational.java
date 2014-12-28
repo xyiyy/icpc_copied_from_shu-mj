@@ -7,20 +7,24 @@ package com.shu_mj.ds;
 import java.math.BigInteger;
 
 public class Rational implements Comparable<Rational> {
-    public static final Rational ZERO = new Rational(BigInteger.ZERO, BigInteger.ONE);
-    public static final Rational ONE = new Rational(BigInteger.ONE, BigInteger.ONE);
-    public static final Rational TWO = new Rational(BigInteger.valueOf(2), BigInteger.ONE);
+    public static final Rational ZERO  = new Rational(BigInteger.ZERO, BigInteger.ONE);
+    public static final Rational ONE   = new Rational(BigInteger.ONE, BigInteger.ONE);
+    public static final Rational TWO   = new Rational(BigInteger.valueOf(2), BigInteger.ONE);
     public static final Rational THREE = new Rational(BigInteger.valueOf(3), BigInteger.ONE);
-    public static final Rational FOUR = new Rational(BigInteger.valueOf(4), BigInteger.ONE);
-    public static final Rational FIVE = new Rational(BigInteger.valueOf(5), BigInteger.ONE);
-    public static final Rational SIX = new Rational(BigInteger.valueOf(6), BigInteger.ONE);
+    public static final Rational FOUR  = new Rational(BigInteger.valueOf(4), BigInteger.ONE);
+    public static final Rational FIVE  = new Rational(BigInteger.valueOf(5), BigInteger.ONE);
+    public static final Rational SIX   = new Rational(BigInteger.valueOf(6), BigInteger.ONE);
     public static final Rational SEVEN = new Rational(BigInteger.valueOf(7), BigInteger.ONE);
     public static final Rational EIGHT = new Rational(BigInteger.valueOf(8), BigInteger.ONE);
-    public static final Rational NINE = new Rational(BigInteger.valueOf(9), BigInteger.ONE);
-    public static final Rational TEN = new Rational(BigInteger.valueOf(10), BigInteger.ONE);
+    public static final Rational NINE  = new Rational(BigInteger.valueOf(9), BigInteger.ONE);
+    public static final Rational TEN   = new Rational(BigInteger.valueOf(10), BigInteger.ONE);
 
     public BigInteger num;
     public BigInteger den;
+
+    public Rational(long num, long den) {
+        this(BigInteger.valueOf(num), BigInteger.valueOf(den));
+    }
 
     public Rational(BigInteger num, BigInteger den) {
         this.num = num;

@@ -245,7 +245,16 @@ public class Num {
         while (e != 0) {
             if ((e & 1L) != 0) res = res * p;
             p = p * p;
-//            p = p * p % mod;
+            e >>= 1;
+        }
+        return res;
+    }
+
+    public static long powR(long p, long e, long mod) {
+        long res = 1;
+        while (e != 0) {
+            if ((e & 1L) != 0) res = mul(res, p, mod);
+            p = mul(p, p, mod);
             e >>= 1;
         }
         return res;
@@ -254,9 +263,8 @@ public class Num {
     public static long pow(long p, long e, long mod) {
         long res = 1;
         while (e != 0) {
-            if ((e & 1L) != 0) res = res * p % mod;
-            p = mul(p, p, mod);
-//            p = p * p % mod;
+            if ((e & 1l) != 0) res = res * p % mod;
+            p = p * p % mod;
             e >>= 1;
         }
         return res;
@@ -270,6 +278,7 @@ public class Num {
         }
         return res;
     }
+
     public static long mul(long a, long b, long mod) {
         return BigInteger.valueOf(a).multiply(BigInteger.valueOf(b)).mod(BigInteger.valueOf(mod)).longValue();
     }

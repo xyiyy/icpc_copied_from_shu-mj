@@ -6,6 +6,7 @@ import com.shu_mj.ds.Palindrome;
 import com.shu_mj.ds.SuffixArray;
 import com.shu_mj.geo.P;
 import com.shu_mj.graph.SCC;
+import com.shu_mj.math.Num;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
 

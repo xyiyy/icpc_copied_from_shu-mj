@@ -23,7 +23,7 @@ public class RMQ {
         }
     }
 
-    // 返回最小值的下标
+    // return index
     public int query(int from, int to) {
         int k = Algo.log2(to - from);
         return vs[min[k][from]] <= vs[min[k][to - (1 << k)]] ? min[k][from]
