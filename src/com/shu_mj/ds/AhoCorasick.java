@@ -37,6 +37,20 @@ public class AhoCorasick {
         }
     }
 
+    public Map<Node, Integer> getNodeIndex(List<Node> ns) {
+        Map<Node, Integer> index = new HashMap<Node, Integer>();
+        Queue<Node> que = new LinkedList<Node>();
+        que.add(root);
+        int crt = 0;
+        while (!que.isEmpty()) {
+            Node t = que.poll();
+            ns.add(t);
+            index.put(t, crt++);
+            que.addAll(t.cs.values());
+        }
+        return index;
+    }
+
     public int[] searchFrom(char[] t) {
         int n = t.length;
         int[] count = new int[m];
@@ -51,8 +65,8 @@ public class AhoCorasick {
     }
 
     public static class Node {
-        Map<Character, Node> cs = new TreeMap<Character, Node>();
-        List<Integer> accept = new ArrayList<Integer>();
-        Node fail;
+        public Map<Character, Node> cs = new TreeMap<Character, Node>();
+        public List<Integer> accept = new ArrayList<Integer>();
+        public Node fail;
     }
 }

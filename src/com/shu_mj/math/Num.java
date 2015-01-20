@@ -184,7 +184,7 @@ public class Num {
     }
 
     public static long[] combinationRowTable(int n, long mod) {
-        long[] res = invFactorialTable(n, mod);
+        long[] res = invTable(n, mod);
         res[0] = 1;
         for (int i = 1; i <= n; i++) {
             res[i] = res[i - 1] * (n - i + 1) % mod * res[i] % mod;
@@ -209,11 +209,11 @@ public class Num {
         return res;
     }
 
-    public static long[] invFactorialTable(int n, long mod) {
+    public static long[] invTable(int n, long mod) {
         long[] res = new long[n + 1];
         if (n >= 1) res[1] = 1;
         for (int i = 2; i <= n; i++)
-            res[i] = (mod - mod / i * res[((int) (mod % i))] % mod) % mod;
+            res[i] = (mod - mod / i * res[(int) (mod % i)] % mod) % mod;
         return res;
     }
 

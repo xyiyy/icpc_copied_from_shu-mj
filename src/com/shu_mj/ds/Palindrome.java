@@ -4,6 +4,11 @@ package com.shu_mj.ds;
  * Created by Jun on 9/16/2014.
  */
 public class Palindrome {
+    /*
+    [a c c a b a]
+    ->
+    [1, 0, 1, 4, 1, 0, 1, 0, 3, 0, 1, 0]
+     */
     public static int[] palindrome(char[] cs) {
         int n = cs.length;
         int[] len = new int[n * 2];

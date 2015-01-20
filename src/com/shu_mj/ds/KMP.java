@@ -18,6 +18,17 @@ public class KMP {
         }
     }
 
+    public static int[] getFailArray(char[] p) {
+        int m = p.length;
+        int[] fail = new int[m + 1];
+        int crt = fail[0] = -1;
+        for (int i = 1; i <= m; i++) {
+            while (crt >= 0 && p[crt] != p[i - 1]) crt = fail[crt];
+            fail[i] = ++crt;
+        }
+        return fail;
+    }
+
     public int searchFrom(char[] t) {
         int n = t.length, count = 0;
         for (int i = 0, j = 0; i < n; i++) {
