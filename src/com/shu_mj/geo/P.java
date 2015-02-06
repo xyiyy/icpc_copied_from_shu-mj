@@ -289,6 +289,13 @@ public class P implements Comparable<P> {
         return Math.acos(p1.dot(p2) / p1.abs() / p2.abs());
     }
 
+    //返回 0~2PI 的角
+    public static double rad2(P p1, P p2) {
+        double r = (p1.det(p2) < -EPS ? -1 : 1) * rad(p1, p2);
+        if (r < 0) r += 2 * Math.PI;
+        return r;
+    }
+
     //凸包
     //逆时针 不包含线上的点
     //如果需要包含线上的点 将 <= 0 改成 < 0

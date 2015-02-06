@@ -16,6 +16,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
+        Algo.debug(Math.acos(0));
     }
 
     public static void main(String[] args) {
