@@ -1,11 +1,10 @@
 package main;
 
-import com.shu_mj.math.Num;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
 
 import java.io.*;
-import java.util.BitSet;
+import java.util.*;
 
 /**
  * Created by Jun on 6/13/2014.
@@ -16,7 +15,6 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
-        Algo.debug(Math.acos(0));
     }
 
     public static void main(String[] args) {

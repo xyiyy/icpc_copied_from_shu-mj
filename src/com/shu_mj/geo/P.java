@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class P implements Comparable<P> {
-    public static final double EPS = 1e-8;
+    public static final double EPS = 1e-9;
     public static double add(double a, double b) {
         if (Math.abs(a + b) < EPS * (Math.abs(a) + Math.abs(b))) return 0;
         return a + b;

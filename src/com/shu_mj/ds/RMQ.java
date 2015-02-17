@@ -30,4 +30,8 @@ public class RMQ {
                 : min[k][to - (1 << k)];
     }
 
+    public int queryValue(int from, int to) {
+        return vs[query(from, to)];
+    }
+
 }

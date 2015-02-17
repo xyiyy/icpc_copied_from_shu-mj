@@ -65,7 +65,7 @@ public class Matrix {
         int n = a.length;
         long[][] c = new long[n][n];
         for (int i = 0; i < n; i++) {
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < n; k++) if (a[i][k] != 0) {
                 for (int j = 0; j < n; j++) {
                     c[i][j] = (c[i][j] + a[i][k] * b[k][j]) % mod;
                 }
@@ -91,7 +91,7 @@ public class Matrix {
         int n = a.length;
         int[][] c = new int[n][n];
         for (int i = 0; i < n; i++) {
-            for (int k = 0; k < n; k++) {
+            for (int k = 0; k < n; k++) if (a[i][k] != 0) {
                 for (int j = 0; j < n; j++) {
                     c[i][j] = c[i][j] + a[i][k] * b[k][j];
                 }
