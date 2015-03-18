@@ -455,6 +455,10 @@ public class Num {
         if (!map.containsKey(k)) map.put(k, 1);
         else map.put(k, map.get(k) + 1);
     }
+    public static <K> void dec(Map<K, Integer> map, K k) {
+        if (map.get(k) == 1) map.remove(k);
+        else map.put(k, map.get(k) - 1);
+    }
 
    // Ax = B (mod M)
     public static BigInteger[] congruence(BigInteger[] A, BigInteger[] B, BigInteger[] M) {

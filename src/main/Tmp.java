@@ -1,5 +1,6 @@
 package main;
 
+import com.shu_mj.math.Num;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
 
