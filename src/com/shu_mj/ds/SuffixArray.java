@@ -8,7 +8,8 @@ import java.util.Arrays;
 public class SuffixArray {
     public int n;
     public char[] cs;
-    public int[] si, is;// si:= suffix array(si[0] = end); is[si[i]] = i;
+    public int[] si;// si:= suffix array(si[0] = end);
+    public int[] is;// is[si[i]] = i;
 
     public int[] indexSort(int[] is) {
         int[] c = new int[128];

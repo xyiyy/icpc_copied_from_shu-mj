@@ -999,4 +999,48 @@ public class Algo {
         }
     }
 
+    public static void radixSort(int[] a) {
+        final int d = 8;
+        final int w = 32;
+        int[] t = new int[a.length];
+        for (int p = 0; p < w / d; p++) {
+            // counting-sort
+            int[] cnt = new int[1 << d];
+            for (int i = 0; i < a.length; i++)
+                ++cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)];
+            for (int i = 1; i < cnt.length; i++)
+                cnt[i] += cnt[i - 1];
+            for (int i = a.length - 1; i >= 0; i--)
+                t[--cnt[((a[i] ^ Integer.MIN_VALUE) >>> (d * p)) & ((1 << d) - 1)]] = a[i];
+            System.arraycopy(t, 0, a, 0, a.length);
+        }
+    }
+
+    // See: http://www.cplusplus.com/reference/algorithm/nth_element
+    public static void nth_element(int[] a, int low, int high, int n) {
+        while (true) {
+            int k = randomizedPartition(a, low, high);
+            if (n < k)
+                high = k;
+            else if (n > k)
+                low = k + 1;
+            else
+                return;
+        }
+    }
+
+    static int randomizedPartition(int[] a, int low, int high) {
+        swap(a, low + (int) (Math.random() * (high - low)), high - 1);
+        int separator = a[high - 1];
+        int i = low - 1;
+        for (int j = low; j < high; j++)
+            if (a[j] <= separator)
+                swap(a, ++i, j);
+        return i;
+    }
+
+    public static void fill(int[][][][] issss, int v) {
+        for (int[][][] isss : issss) fill(isss, v);
+    }
+
 }

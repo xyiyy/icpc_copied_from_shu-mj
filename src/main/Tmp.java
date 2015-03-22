@@ -1,5 +1,6 @@
 package main;
 
+import com.shu_mj.ds.SuffixArray;
 import com.shu_mj.math.Num;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;
@@ -16,6 +17,7 @@ public class Tmp {
     PrintStream out = System.out;
 
     void run() {
+
     }
 
     public static void main(String[] args) {
