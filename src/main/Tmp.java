@@ -1,6 +1,8 @@
 package main;
 
+import com.shu_mj.ds.KMP;
 import com.shu_mj.ds.SuffixArray;
+import com.shu_mj.ds.SuffixArrayS;
 import com.shu_mj.math.Num;
 import com.shu_mj.tpl.Algo;
 import com.shu_mj.tpl.Scanner;

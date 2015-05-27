@@ -1,0 +1,40 @@
+6 fence8
+6 SINGLE
+7 TASK_ID
+9 input.txt
+7 TASK_ID
+10 output.txt
+1
+0
+46 4
+30
+40
+50
+25
+10
+15
+16
+17
+18
+19
+20
+21
+25
+24
+30
+1 7
+1
+8 src/main
+16 -Xmx256m -Xss64m
+6 fence8
+10 main.USACO
+39 net.egork.chelper.checkers.TokenChecker
+0 
+0
+10 2015.03.28
+5 USACO
+1
+22 com.shu_mj.tpl.Scanner
+19 java.io.PrintWriter
+0
+0

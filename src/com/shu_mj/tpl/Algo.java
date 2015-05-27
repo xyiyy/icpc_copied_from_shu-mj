@@ -2,6 +2,7 @@ package com.shu_mj.tpl;
 
 import com.shu_mj.geo.P;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -1043,4 +1044,13 @@ public class Algo {
         for (int[][][] isss : issss) fill(isss, v);
     }
 
+    public static <T> void fill(T[][] tss, T t) {
+        for (T[] ts : tss) Arrays.fill(ts, t);
+    }
+    public static <T> void fill(T[][][] tsss, T t) {
+        for (T[][] tss : tsss) fill(tss, t);
+    }
+    public static <T> void fill(T[][][][] tssss, T t) {
+        for (T[][][] tsss : tssss) fill(tsss, t);
+    }
 }

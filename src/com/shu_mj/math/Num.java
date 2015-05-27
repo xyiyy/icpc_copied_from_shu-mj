@@ -370,6 +370,19 @@ public class Num {
         return ps;
     }
 
+    public static List<Integer> primeFactors(int n) {
+        List<Integer> ps = new ArrayList<Integer>();
+        for (int i : primes) {
+            if ((long) i * i > n) break;
+            if (n % i == 0) {
+                ps.add(i);
+                while (n % i == 0) n /= i;
+            }
+        }
+        if (n != 1) ps.add(n);
+        return ps;
+    }
+
     public static List<Long> factors(long n) {
         List<Long> res = new ArrayList<Long>();
         for (long i = 1; i * i <= n; i++) {
@@ -480,7 +493,7 @@ public class Num {
             x += m * (b / d * inv(a / d, M[i] / d) % (M[i] / d));
             m *= M[i] / d;
         }
-        return new long[] { x % m, m };
+        return new long[] { (x % m + m) % m, m };
     }
 
     public static long[] congruence(long A, long B, long M) {

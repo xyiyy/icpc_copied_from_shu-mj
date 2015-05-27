@@ -157,4 +157,14 @@ public class Scanner {
         }
         return maps;
     }
+
+    public void nextIntArray(int n, int[] a, int[] b, int[] c, int[] d, int[] e) {
+        for (int i = 0; i < n; i++) {
+            a[i] = nextInt();
+            b[i] = nextInt();
+            c[i] = nextInt();
+            d[i] = nextInt();
+            e[i] = nextInt();
+        }
+    }
 }
